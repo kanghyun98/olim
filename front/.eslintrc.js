@@ -18,6 +18,7 @@ module.exports = {
     'no-use-before-define': 0,
     'linebreak-style': 0,
     'no-param-reassign': 0,
+    '@typescript-eslint/explicit-module-boundary-types': 0,
     'prettier/prettier': [
       'error',
       {
