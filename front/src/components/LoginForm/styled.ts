@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Form } from 'antd';
 
-export const Wrapper = styled.main`
+export const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
@@ -18,8 +18,8 @@ export const FormWrapper = styled(Form)`
     margin: 1.5rem auto 0.75rem;
   }
 
-  & > div {
-    margin-bottom: 1rem;
+  & > div:nth-child(2) {
+    margin-bottom: 0.75rem;
   }
 
   & button {

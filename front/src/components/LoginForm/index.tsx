@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Form, Input, Button } from 'antd';
+import { Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { Wrapper, FormWrapper } from './styled';
+import useInput from '../../hooks/useInput';
 
 const LoginForm = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const onSubmit = (values: any) => {
-    console.log('로그인 정보', values);
+  const onSubmit = () => {
+    setLoggedIn(true);
+    console.log(userId, password);
   };
 
-  const onLogin = () => {
-    setLoggedIn(true);
-  };
+  const [userId, onChangeUserId] = useInput('');
+  const [password, onChangePassword] = useInput('');
 
   useEffect(() => {
     if (loggedIn) {
@@ -25,19 +26,19 @@ const LoginForm = () => {
 
   return (
     <Wrapper>
-      <FormWrapper name="normal_login" onFinish={onSubmit}>
+      <FormWrapper name="login" onFinish={onSubmit}>
         <h1>Noname</h1>
-        <Form.Item name="username" rules={[{ required: true, message: '아이디를 입력해주세요' }]}>
-          <Input prefix={<UserOutlined />} placeholder="ID" />
-        </Form.Item>
-        <Form.Item name="password" rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}>
-          <Input prefix={<LockOutlined />} type="password" placeholder="Password" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" onClick={onLogin}>
+        <div>
+          <Input prefix={<UserOutlined />} placeholder="ID" onChange={onChangeUserId} />
+        </div>
+        <div>
+          <Input prefix={<LockOutlined />} type="password" placeholder="Password" onChange={onChangePassword} />
+        </div>
+        <div>
+          <Button type="primary" htmlType="submit">
             로그인
           </Button>
-        </Form.Item>
+        </div>
         아직 계정이 없으신가요?
         <Link href="/signup">
           <a> 가입하기</a>
