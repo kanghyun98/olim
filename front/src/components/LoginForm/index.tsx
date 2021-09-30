@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Input, Button } from 'antd';
@@ -10,13 +10,13 @@ import useInput from '../../hooks/useInput';
 const LoginForm = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const onSubmit = () => {
-    setLoggedIn(true);
-    console.log(userId, password);
-  };
-
   const [userId, onChangeUserId] = useInput('');
   const [password, onChangePassword] = useInput('');
+
+  const onSubmit = useCallback(() => {
+    setLoggedIn(true);
+    console.log(userId, password);
+  }, [userId, password]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -29,10 +29,16 @@ const LoginForm = () => {
       <FormWrapper name="login" onFinish={onSubmit}>
         <h1>Noname</h1>
         <div>
-          <Input prefix={<UserOutlined />} placeholder="ID" onChange={onChangeUserId} />
+          <Input prefix={<UserOutlined />} placeholder="아이디" onChange={onChangeUserId} required />
         </div>
         <div>
-          <Input prefix={<LockOutlined />} type="password" placeholder="Password" onChange={onChangePassword} />
+          <Input
+            prefix={<LockOutlined />}
+            type="password"
+            placeholder="비밀번호"
+            onChange={onChangePassword}
+            required
+          />
         </div>
         <div>
           <Button type="primary" htmlType="submit">
