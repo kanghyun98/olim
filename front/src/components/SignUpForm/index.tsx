@@ -8,11 +8,11 @@ import useInput from '../../hooks/useInput';
 import { Wrapper, FormWrapper, ErrorMessage } from './styled';
 
 const SignUpForm = () => {
-  const [userId, onChangeUserId] = useInput('');
+  const [name, onChangeName] = useInput('');
+  const [userId, onChangeUserId] = useInput(''); // 중복 검사
   const [password, setPassword] = useState('');
   const [passwordConfirmed, setPasswordConfirmed] = useState('');
-  const [userName, onChangeUserName] = useInput('');
-  const [birthday, setBirthday] = useState('');
+  const [userName, onChangeUserName] = useInput(''); // 중복 검사
 
   const onChangePassword = useCallback(
     (e) => {
@@ -31,22 +31,21 @@ const SignUpForm = () => {
     [password],
   );
 
-  const onChangeBirthday = useCallback((e) => {
-    setBirthday(e.target.value);
-  }, []);
-
   const onSubmit = useCallback(() => {
     if (password !== passwordConfirmed) {
       return setPasswordError(true);
     }
-    console.log(userId, password, passwordConfirmed, userName, birthday);
+    console.log(name, userId, password, passwordConfirmed, userName);
     Router.push('/');
-  }, [birthday, password, passwordConfirmed, userId, userName]);
+  }, [name, userId, password, passwordConfirmed, userName]);
 
   return (
     <Wrapper>
       <FormWrapper name="signup" onFinish={onSubmit}>
         <h1>회원가입</h1>
+        <div>
+          <Input placeholder="이름" onChange={onChangeName} required />
+        </div>
         <div>
           <Input placeholder="아이디" onChange={onChangeUserId} required />
         </div>
@@ -63,9 +62,6 @@ const SignUpForm = () => {
         </div>
         <div>
           <Input placeholder="사용자 이름" onChange={onChangeUserName} required />
-        </div>
-        <div>
-          <Input placeholder="생년월일" onChange={onChangeBirthday} type="date" required />
         </div>
         <Button type="primary" htmlType="submit">
           가입하기
