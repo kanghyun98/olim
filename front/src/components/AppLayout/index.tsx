@@ -3,6 +3,7 @@ import { Global } from '@emotion/react';
 
 import { defaultStyle, Container } from './styled';
 import Header from './Header';
+import Footer from './Footer';
 
 const AppLayout = ({ children }) => {
   return (
@@ -10,6 +11,7 @@ const AppLayout = ({ children }) => {
       <Global styles={defaultStyle} />
       <Header />
       <Container>{children}</Container>
+      <Footer />
     </>
   );
 };
