@@ -27,7 +27,7 @@ const LoginForm = () => {
   return (
     <Wrapper>
       <FormWrapper name="login" onFinish={onSubmit}>
-        <h1>Noname</h1>
+        <h1>Login</h1>
         <div>
           <Input prefix={<UserOutlined />} placeholder="아이디" onChange={onChangeUserId} required />
         </div>
@@ -45,10 +45,12 @@ const LoginForm = () => {
             로그인
           </Button>
         </div>
-        아직 계정이 없으신가요?
-        <Link href="/signup">
-          <a> 가입하기</a>
-        </Link>
+        <div>
+          아직 계정이 없으신가요?
+          <Link href="/signup">
+            <a> 가입하기</a>
+          </Link>
+        </div>
       </FormWrapper>
     </Wrapper>
   );

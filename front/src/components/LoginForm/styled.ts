@@ -18,8 +18,12 @@ export const FormWrapper = styled(Form)`
     margin: 1.5rem auto 0.75rem;
   }
 
-  & > div:nth-child(2) {
-    margin-bottom: 0.75rem;
+  & > div {
+    margin-top: 0.75rem;
+  }
+
+  & > div:nth-child(3) {
+    margin-bottom: 1.5rem;
   }
 
   & button {
