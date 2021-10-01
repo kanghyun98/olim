@@ -1,7 +1,9 @@
 import React from 'react';
 import { Global, css } from '@emotion/react';
+import styled from '@emotion/styled';
 
-// header, footer 만들기
+import Header from './Header';
+
 const defaultStyle = css`
   * {
     padding: 0;
@@ -18,12 +20,21 @@ const defaultStyle = css`
   }
 `;
 
+const Container = styled.main`
+  position: relative;
+  min-height: 100vh;
+  margin: 3rem auto;
+  width: 100%;
+  max-width: 975px;
+`;
+
 const AppLayout = ({ children }) => {
   return (
-    <div>
+    <>
       <Global styles={defaultStyle} />
-      {children}
-    </div>
+      <Header />
+      <Container>{children}</Container>
+    </>
   );
 };
 
