@@ -3,7 +3,6 @@ import { Form, Input } from 'antd';
 
 export const FormWrapper = styled(Form)`
   padding: 1rem 0.5rem;
-  margin-top: 
   border: 1px solid #dbdbdb;
   background-color: #fafafa;
 `;
