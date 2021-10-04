@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-const PostContent = ({ postContent }) => {
+const ContentLink = ({ content }) => {
   return (
     <div>
-      {postContent.split(/(#[^\s#@]+|@[^\s#@]+)/g).map((v, index) => {
+      {content.split(/(#[^\s#@]+|@[^\s#@]+)/g).map((v, index) => {
         // 태그
         if (v.match(/(#[^\s#]+)/)) {
           return (
@@ -29,4 +29,4 @@ const PostContent = ({ postContent }) => {
   );
 };
 
-export default PostContent;
+export default ContentLink;
