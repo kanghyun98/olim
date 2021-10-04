@@ -9,7 +9,11 @@ const dummy = {
       id: 1,
       date: '2021-10-02',
       content: '게시글 내용입니다.#test@kanghyunee98',
-      Images: [{ src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629943639/default_image.jpg' }],
+      Images: [
+        { src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629943639/default_image.jpg' },
+        { src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629941392/home_image.jpg' },
+        { src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629941392/home_image.jpg' },
+      ],
       User: {
         id: 1234,
         userName: '강혀니',
