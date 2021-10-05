@@ -64,9 +64,7 @@ const AddPostForm = () => {
       <ButtonsWrapper>
         <input type="file" multiple hidden ref={imageInput} onChange={onChangeImage} />
         <Button onClick={onClickAddImage}>이미지 업로드</Button>
-        <Button type="primary" htmlType="submit">
-          작성 완료
-        </Button>
+        <Button htmlType="submit">작성 완료</Button>
       </ButtonsWrapper>
     </FormWrapper>
   );

@@ -3,8 +3,8 @@ import { Form, Input } from 'antd';
 
 export const FormWrapper = styled(Form)`
   padding: 1rem 0.5rem;
+  margin-bottom: 1.75rem;
   border: 1px solid #dbdbdb;
-  background-color: #fafafa;
 `;
 
 export const TextBox = styled(Input.TextArea)`

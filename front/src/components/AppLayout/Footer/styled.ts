@@ -8,6 +8,7 @@ const FooterWrapper = styled.footer`
   padding: 3rem 5rem;
   margin: 0 auto;
   font-size: 1rem;
+  background-color: #fafafa;
 
   & > div {
     display: flex;

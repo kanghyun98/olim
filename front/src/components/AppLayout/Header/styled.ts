@@ -7,6 +7,8 @@ export const HeaderWrapper = styled.header`
   top: 0;
   width: 100%;
   background-color: white;
+  border-bottom: 1px solid #dbdbdb;
+  background-color: #fafafa;
   z-index: 10;
 `;
 
@@ -18,6 +20,7 @@ export const HeaderList = styled.div`
   height: 100%;
   max-width: 975px;
   margin: 0 auto;
+  padding: 0 1rem;
 
   & > div {
     display: flex;

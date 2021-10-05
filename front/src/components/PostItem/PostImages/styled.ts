@@ -3,14 +3,17 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-export const SlideWrapper = styled.div``;
-
 export const SlideList = styled(Slider)`
   position: relative;
 
   & .slick-track {
     display: flex;
     align-items: center;
+    background-color: #fafafa;
+  }
+
+  & .slick-slider {
+    border: 1px solid #dbdbdb;
   }
 
   & .slick-arrow {
@@ -36,6 +39,7 @@ export const SlideList = styled(Slider)`
 export const ImageWrapper = styled.div`
   & img {
     width: 100%;
+    height: 100%;
     max-height: 750px;
     margin: 0 auto;
   }

@@ -11,7 +11,7 @@ export const defaultStyle = css`
 
   a,
   a:hover {
-    color: inherit;
+    color: #00376b;
     text-decoration: none;
     cursor: pointer;
   }
@@ -20,7 +20,8 @@ export const defaultStyle = css`
 export const Container = styled.main`
   position: relative;
   min-height: 100vh;
-  margin: 3rem auto;
+  max-width: 42rem;
   width: 100%;
-  max-width: 975px;
+  margin: 4rem auto;
+  padding: 0 1rem;
 `;

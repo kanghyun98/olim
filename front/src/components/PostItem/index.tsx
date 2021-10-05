@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
-import { Avatar, Button, Card, Popover, List } from 'antd';
+import Link from 'next/link';
+import { Avatar, Button, Card, Popover } from 'antd';
 import { HeartFilled, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 
 import PostImages from './PostImages';
 import ContentLink from './ContentLink';
 import CommentForm from './CommentForm';
-import { CardWrapper } from './styled';
+import { CardWrapper, HeaderLink } from './styled';
 
 const PostItem = ({ post }) => {
   const [commentOpenedAll, setCommentOpenedAll] = useState(false);
@@ -43,12 +44,16 @@ const PostItem = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        title={
+          <Link href={`/profile/${post.User.userName}`}>
+            <HeaderLink>
+              <Avatar>{post.User.userName}</Avatar>
+              <span>{post.User.userName}</span>
+            </HeaderLink>
+          </Link>
+        }
       >
-        <Card.Meta
-          avatar={<Avatar>{post.User.userName}</Avatar>}
-          title={post.User.userName}
-          description={<ContentLink content={post.content} />}
-        />
+        <ContentLink content={post.content} />
       </Card>
       {commentOpenedAll && <CommentForm comments={post.Comments} postId={post.id} />}
     </CardWrapper>

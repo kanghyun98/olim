@@ -4,7 +4,6 @@ import { SlideList, ImageWrapper } from './styled';
 
 const PostImages = ({ images }) => {
   const settings = {
-    dots: true,
     infinite: false,
     slidesToShow: 1,
     slidesToScroll: 1,
