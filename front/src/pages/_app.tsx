@@ -4,6 +4,7 @@ import Head from 'next/head';
 import 'antd/dist/antd.css';
 
 import AppLayout from '../components/AppLayout';
+import wrapper from '../store/configureStore';
 
 const App = ({ Component }: AppProps) => {
   return (
@@ -19,4 +20,4 @@ const App = ({ Component }: AppProps) => {
   );
 };
 
-export default App;
+export default wrapper.withRedux(App);
