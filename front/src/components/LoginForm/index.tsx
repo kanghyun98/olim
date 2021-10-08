@@ -1,28 +1,29 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { Wrapper, FormWrapper } from './styled';
 import useInput from '../../hooks/useInput';
+import { login } from '../../actions/user';
 
 const LoginForm = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
+  const dispatch = useDispatch();
+  const { loginLoading, loginErrorInfo } = useSelector((state) => state.user);
   const [userId, onChangeUserId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const onSubmit = useCallback(() => {
-    setLoggedIn(true);
+    dispatch(
+      login({
+        userId,
+        password,
+      }),
+    );
     console.log(userId, password);
   }, [userId, password]);
-
-  useEffect(() => {
-    if (loggedIn) {
-      Router.replace('/');
-    }
-  }, [loggedIn]);
 
   return (
     <Wrapper>
@@ -41,7 +42,7 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loginLoading}>
             로그인
           </Button>
         </div>
