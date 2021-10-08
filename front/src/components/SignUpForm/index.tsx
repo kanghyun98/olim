@@ -1,13 +1,30 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import { Button, Input } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import useInput from '../../hooks/useInput';
 import { Wrapper, FormWrapper, ErrorMessage } from './styled';
+import { signup } from '../../actions/user';
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
+  const { signupLoading, signupDone, signupError } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError]);
+
+  useEffect(() => {
+    if (signupDone) {
+      Router.replace('/login');
+    }
+  }, [signupDone]);
+
   const [name, onChangeName] = useInput('');
   const [userId, onChangeUserId] = useInput(''); // 중복 검사
   const [password, setPassword] = useState('');
@@ -35,9 +52,17 @@ const SignUpForm = () => {
     if (password !== passwordConfirmed) {
       return setPasswordError(true);
     }
+
     console.log(name, userId, password, passwordConfirmed, userName);
-    Router.push('/');
-  }, [name, userId, password, passwordConfirmed, userName]);
+    return dispatch(
+      signup({
+        name,
+        userId,
+        password,
+        userName,
+      }),
+    );
+  }, [password, passwordConfirmed, name, userId, userName, dispatch]);
 
   return (
     <Wrapper>
@@ -63,7 +88,7 @@ const SignUpForm = () => {
         <div>
           <Input placeholder="사용자 이름" onChange={onChangeUserName} required />
         </div>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={signupLoading}>
           가입하기
         </Button>
         <div>

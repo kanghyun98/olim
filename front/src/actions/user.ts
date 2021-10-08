@@ -20,3 +20,12 @@ export const logout = createAsyncThunk('user/logout', async (data, thunkAPI) => 
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
+export const signup = createAsyncThunk('user/signup', async (data, thunkAPI) => {
+  try {
+    // const response = await axios.post(`/signup`);
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});

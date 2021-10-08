@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { login, logout } from '../actions/user';
+import { login, logout, signup } from '../actions/user';
 
 export const initialState = {
   myInfo: null,
@@ -10,6 +10,9 @@ export const initialState = {
   logoutLoading: false,
   logoutDone: false,
   logoutError: null,
+  signupLoading: false,
+  signupDone: false,
+  signupError: null,
 };
 
 export const userSlice = createSlice({
@@ -48,5 +51,20 @@ export const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false;
         state.logoutError = action.error.message;
+      })
+
+      // signup (아직 아무것도 저장 안함)
+      .addCase(signup.pending, (state) => {
+        state.signupLoading = true;
+        state.signupDone = false;
+        state.signupError = null;
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.signupLoading = false;
+        state.signupDone = true;
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.signupLoading = false;
+        state.signupError = action.error.message;
       }),
 });
