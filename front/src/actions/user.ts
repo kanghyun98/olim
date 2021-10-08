@@ -3,7 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-export const login = createAsyncThunk('post/login', async (data, thunkAPI) => {
+export const login = createAsyncThunk('user/login', async (data, thunkAPI) => {
   try {
     // const response = await axios.post(`/login`);
     return data;
@@ -12,7 +12,7 @@ export const login = createAsyncThunk('post/login', async (data, thunkAPI) => {
   }
 });
 
-export const logout = createAsyncThunk('post/logout', async (data, thunkAPI) => {
+export const logout = createAsyncThunk('user/logout', async (data, thunkAPI) => {
   try {
     // const response = await axios.post(`/logout`);
     return data;
