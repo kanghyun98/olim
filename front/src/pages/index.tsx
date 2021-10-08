@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Router from 'next/router';
+import { useSelector } from 'react-redux';
 
 import AddPostForm from '../components/AddPostForm';
 import PostItem from '../components/PostItem';
@@ -7,7 +9,6 @@ const dummy = {
   mainPosts: [
     {
       id: 1,
-      date: '2021-10-02',
       content: '게시글 내용입니다.#test@kanghyunee98',
       Images: [
         { src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629943639/default_image.jpg' },
@@ -37,7 +38,6 @@ const dummy = {
     },
     {
       id: 2,
-      date: '2021-10-02',
       content: '게시글 두번째 내용입니다.',
       Images: [{ src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629941392/home_image.jpg' }],
       User: {
@@ -64,8 +64,15 @@ const dummy = {
   ],
 };
 
-// 로그인 시에만 AddPostForm 보이게
 const Home = () => {
+  const { myInfo } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!myInfo) {
+      Router.push('/login');
+    }
+  }, [myInfo]);
+
   return (
     <>
       <AddPostForm />
