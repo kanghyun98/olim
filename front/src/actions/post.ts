@@ -5,7 +5,7 @@ import { generateDummyPost } from '../reducers/post';
 
 axios.defaults.withCredentials = true;
 
-export const loadPosts = createAsyncThunk('post/loadPosts', async (data, thunkAPI) => {
+export const loadAllPosts = createAsyncThunk('post/loadAllPosts', async (data, thunkAPI) => {
   try {
     // const response = await axios.get(`/posts`);
     return generateDummyPost(10);

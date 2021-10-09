@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import shortId from 'shortid';
 import faker from 'faker';
 
-import { addPost, loadPosts } from '../actions/post';
+import { addPost, loadAllPosts } from '../actions/post';
 
 export const generateDummyPost = (number) =>
   Array(number)
@@ -11,9 +11,10 @@ export const generateDummyPost = (number) =>
       id: shortId.generate(),
       content: faker.lorem.paragraph(),
       Images: [
-        {
-          src: faker.image.image(),
-        },
+        { src: faker.image.image() },
+        { src: faker.image.image() },
+        { src: faker.image.image() },
+        { src: faker.image.image() },
       ],
       User: {
         id: shortId.generate(),
@@ -33,9 +34,10 @@ export const generateDummyPost = (number) =>
 export const initialState = {
   posts: [],
   imagePaths: [],
-  loadPostsLoading: false,
-  loadPostsDone: false,
-  loadPostsError: null,
+  loadAllPostsLoading: false,
+  loadAllPostsDone: false,
+  loadAllPostsError: null,
+
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -47,20 +49,20 @@ export const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      // loadPost
-      .addCase(loadPosts.pending, (state) => {
-        state.loadPostsLoading = true;
-        state.loadPostsDone = false;
-        state.loadPostsError = null;
+      // loadAllPosts
+      .addCase(loadAllPosts.pending, (state) => {
+        state.loadAllPostsLoading = true;
+        state.loadAllPostsDone = false;
+        state.loadAllPostsError = null;
       })
-      .addCase(loadPosts.fulfilled, (state, action) => {
-        state.loadPostsLoading = false;
-        state.loadPostsDone = true;
-        state.posts.concat(state.posts);
+      .addCase(loadAllPosts.fulfilled, (state, action) => {
+        state.loadAllPostsLoading = false;
+        state.loadAllPostsDone = true;
+        state.posts = state.posts.concat(action.payload);
       })
-      .addCase(loadPosts.rejected, (state, action) => {
-        state.loadPostsLoading = false;
-        state.loadPostsError = action.error.message;
+      .addCase(loadAllPosts.rejected, (state, action) => {
+        state.loadAllPostsLoading = false;
+        state.loadAllPostsError = action.error.message;
       })
 
       // addPost
