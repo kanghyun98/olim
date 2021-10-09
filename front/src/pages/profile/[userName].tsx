@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ProfileHead from '../../components/ProfileHead';
 import PostItem from '../../components/PostItem';
@@ -43,7 +44,7 @@ const dummy = {
       ],
     },
     {
-      id: 1,
+      id: 2,
       content: '게시글 두번째 내용입니다.',
       Images: [{ src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629941392/home_image.jpg' }],
       User: {
@@ -75,7 +76,14 @@ const dummy = {
 
 const Profile = () => {
   const router = useRouter();
+  const { myInfo } = useSelector((state) => state.user);
   const { userName } = router.query;
+
+  useEffect(() => {
+    if (!myInfo) {
+      Router.push('/login');
+    }
+  }, [myInfo]);
 
   // 내 프로필이면 프로필 수정 추가
   const postsNum = dummy.Posts.length;
