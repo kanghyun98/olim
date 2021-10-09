@@ -31,3 +31,12 @@ export const addPost = createAsyncThunk('post/addPost', async (data, thunkAPI) =
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
+export const removePost = createAsyncThunk('post/removePost', async (data, thunkAPI) => {
+  try {
+    // const response = await axios.delete('/post', data);
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});

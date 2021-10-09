@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import shortId from 'shortid';
 import faker from 'faker';
 
-import { addPost, loadAllPosts, loadUserPosts } from '../actions/post';
+import { loadAllPosts, loadUserPosts, addPost, removePost } from '../actions/post';
 
 export const generateDummyPost = (number) =>
   Array(number)
@@ -54,6 +54,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  removePostLoading: false,
+  removePostDone: false,
+  removePostError: null,
 };
 
 export const postSlice = createSlice({
@@ -109,5 +112,21 @@ export const postSlice = createSlice({
       .addCase(addPost.rejected, (state, action) => {
         state.addPostLoading = false;
         state.addPostError = action.error.message;
+      })
+
+      // removePost
+      .addCase(removePost.pending, (state) => {
+        state.removePostLoading = true;
+        state.removePostDone = false;
+        state.removePostError = null;
+      })
+      .addCase(removePost.fulfilled, (state, action) => {
+        state.removePostLoading = false;
+        state.removePostDone = true;
+        state.posts = state.posts.filter((v) => v.id !== action.payload);
+      })
+      .addCase(removePost.rejected, (state, action) => {
+        state.removePostLoading = false;
+        state.removePostError = action.error.message;
       }),
 });
