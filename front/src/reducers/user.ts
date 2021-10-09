@@ -4,6 +4,7 @@ import { login, logout, signup } from '../actions/user';
 
 export const initialState = {
   myInfo: null,
+  userInfo: null,
   loginLoading: false,
   loginDone: false,
   loginError: null,

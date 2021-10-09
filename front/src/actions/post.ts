@@ -14,6 +14,15 @@ export const loadAllPosts = createAsyncThunk('post/loadAllPosts', async (data, t
   }
 });
 
+export const loadUserPosts = createAsyncThunk('post/loadUserPosts', async (data, thunkAPI) => {
+  try {
+    // const response = await axios.get(`/user/${data.userId}/posts`);
+    return generateDummyPost(10); // 나중에 사용자의 id받아서 해당 포스트만 받아오기
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 export const addPost = createAsyncThunk('post/addPost', async (data, thunkAPI) => {
   try {
     // const response = await axios.post('/post', data);

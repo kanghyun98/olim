@@ -5,6 +5,9 @@ import { useRouter } from 'next/router';
 import ProfileHead from '../../components/ProfileHead';
 import PostItem from '../../components/PostItem';
 
+// 백엔드 구축 후 유저별 데이터 불러와서 진행(내 프로필과 합쳐놓음)
+import { loadUserPosts } from '../../actions/post';
+
 // 로그인되어 있다는 가정 하의 kanghyunee98의 프로필
 const dummy = {
   name: '이강현',
@@ -12,7 +15,6 @@ const dummy = {
   Posts: [
     {
       id: 1,
-      date: '2021-10-02',
       content: '게시글 내용입니다.#test@kanghyunee98',
       Images: [
         { src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629943639/default_image.jpg' },
@@ -41,8 +43,7 @@ const dummy = {
       ],
     },
     {
-      id: 2,
-      date: '2021-10-02',
+      id: 1,
       content: '게시글 두번째 내용입니다.',
       Images: [{ src: 'https://res.cloudinary.com/du2sma6fw/image/upload/v1629941392/home_image.jpg' }],
       User: {
