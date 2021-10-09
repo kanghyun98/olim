@@ -1,9 +1,11 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import useInput from '../../hooks/useInput';
 import { FormWrapper, TextBox, PreviewImagesWrapper, ImageWrapper, ButtonsWrapper } from './styled';
+import { addPost } from '../../actions/post';
 
 const dummy = {
   imgPaths: [
@@ -13,15 +15,29 @@ const dummy = {
 };
 
 const AddPostForm = () => {
+  const dispatch = useDispatch();
+  const { imagePaths, addPostLoading, addPostDone } = useSelector((state) => state.user);
   const imageInput = useRef();
   const [text, onChangeText, setText] = useInput('');
 
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone]);
+
   const onSubmit = useCallback(() => {
-    console.log('test');
-    setText('');
-  }, [setText]);
+    const formData = new FormData();
+    // imagePaths.forEach((img) => {
+    //   formData.append('image', img);
+    // });
+    formData.append('content', text);
+    console.log(formData);
+    return dispatch(addPost(text));
+  }, [dispatch, text]);
 
   const onChangeImage = useCallback((e) => {
+    // 만들어놓고 헷갈리네
     const imageFormData = new FormData();
     [].forEach.call(e.target.files, (f) => {
       imageFormData.append('image', f);
@@ -64,7 +80,9 @@ const AddPostForm = () => {
       <ButtonsWrapper>
         <input type="file" multiple hidden ref={imageInput} onChange={onChangeImage} />
         <Button onClick={onClickAddImage}>이미지 업로드</Button>
-        <Button htmlType="submit">작성 완료</Button>
+        <Button htmlType="submit" loading={addPostLoading}>
+          작성 완료
+        </Button>
       </ButtonsWrapper>
     </FormWrapper>
   );
