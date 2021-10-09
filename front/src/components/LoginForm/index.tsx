@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,19 +11,31 @@ import { login } from '../../actions/user';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { loginLoading, loginErrorInfo } = useSelector((state) => state.user);
+  const { loginLoading, loginDone, loginError } = useSelector((state) => state.user);
   const [userId, onChangeUserId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
+  useEffect(() => {
+    if (loginError) {
+      alert(loginError);
+    }
+  }, [loginError]);
+
+  useEffect(() => {
+    if (loginDone) {
+      Router.replace('/');
+    }
+  }, [loginDone]);
+
   const onSubmit = useCallback(() => {
-    dispatch(
+    console.log(userId, password);
+    return dispatch(
       login({
         userId,
         password,
       }),
     );
-    console.log(userId, password);
-  }, [userId, password]);
+  }, [dispatch, userId, password]);
 
   return (
     <Wrapper>
