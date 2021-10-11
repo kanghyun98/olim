@@ -22,7 +22,7 @@ const Header = () => {
   const menu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>
-        <Link href={`/${myInfo.userName}`}>
+        <Link href={`/profile/${myInfo.userName}`}>
           <a>프로필</a>
         </Link>
       </Menu.Item>
