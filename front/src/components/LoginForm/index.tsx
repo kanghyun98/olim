@@ -11,7 +11,7 @@ import { login } from '../../actions/user';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { loginLoading, loginDone, loginError } = useSelector((state) => state.user);
+  const { loginLoading, myInfo, loginError } = useSelector((state) => state.user);
   const [userId, onChangeUserId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
@@ -22,10 +22,10 @@ const LoginForm = () => {
   }, [loginError]);
 
   useEffect(() => {
-    if (loginDone) {
+    if (myInfo) {
       Router.replace('/');
     }
-  }, [loginDone]);
+  }, [myInfo]);
 
   const onSubmit = useCallback(() => {
     console.log(userId, password);
