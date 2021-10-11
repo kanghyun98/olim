@@ -1,29 +1,44 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { Form, Input, Button, List, Comment, Avatar } from 'antd';
 
 import useInput from '../../../hooks/useInput';
 import ContentLink from '../ContentLink';
 import { CommentWriteFormWrapper, CommentWrapper } from './styled';
+import { addComment } from '../../../actions/post';
 
 const CommentForm = ({ comments, postId }) => {
+  const dispatch = useDispatch();
+  const { addCommentLoading, addCommentDone } = useSelector((state) => state.post);
+  const userId = useSelector((state) => state.user.myInfo?.id);
   const [commentInput, onChangeCommentInput, setCommentInput] = useInput('');
+
+  useEffect(() => {
+    if (addCommentDone) {
+      setCommentInput('');
+    }
+  }, [addCommentDone, setCommentInput]);
 
   const onSubmitComment = useCallback(() => {
     console.log(commentInput);
-    setCommentInput('');
-  }, [commentInput, setCommentInput]);
+    dispatch(addComment({ content: commentInput, userId, postId }));
+  }, [commentInput, dispatch, postId, userId]);
 
   return (
     <CommentWrapper>
-      <CommentWriteFormWrapper>
-        <Form onFinish={onSubmitComment}>
-          <Input.TextArea value={commentInput} onChange={onChangeCommentInput} placeholder="댓글 달기" />
-          <Button htmlType="submit">게시</Button>
-        </Form>
-      </CommentWriteFormWrapper>
+      {userId && (
+        <CommentWriteFormWrapper>
+          <Form onFinish={onSubmitComment}>
+            <Input.TextArea value={commentInput} onChange={onChangeCommentInput} placeholder="댓글 달기" />
+            <Button htmlType="submit" loading={addCommentLoading}>
+              게시
+            </Button>
+          </Form>
+        </CommentWriteFormWrapper>
+      )}
       <List
-        header={`댓글 ${comments.length}개`}
+        header={`댓글 ${comments ? comments.length : 0}개`}
         itemLayout="horizontal"
         dataSource={comments}
         renderItem={(item) => (

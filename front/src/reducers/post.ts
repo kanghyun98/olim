@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import shortId from 'shortid';
 import faker from 'faker';
 
-import { loadAllPosts, loadUserPosts, addPost, removePost } from '../actions/post';
+import { loadAllPosts, loadUserPosts, addPost, removePost, addComment } from '../actions/post';
 
 export const generateDummyPost = (number) =>
   Array(number)
@@ -42,6 +42,15 @@ const postTemplate = (data) => ({
   Comments: [],
 });
 
+const commentTemplate = (data) => ({
+  id: shortId.generate(),
+  content: data,
+  User: {
+    id: 1,
+    userName: 'kanghyun',
+  },
+});
+
 export const initialState = {
   posts: [],
   imagePaths: [],
@@ -57,6 +66,9 @@ export const initialState = {
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
 };
 
 export const postSlice = createSlice({
@@ -128,5 +140,22 @@ export const postSlice = createSlice({
       .addCase(removePost.rejected, (state, action) => {
         state.removePostLoading = false;
         state.removePostError = action.error.message;
+      })
+
+      // addComment
+      .addCase(addComment.pending, (state) => {
+        state.addCommentLoading = true;
+        state.addCommentDone = false;
+        state.addCommentError = null;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        const targetPost = state.posts.find((v) => v.id === action.payload.postId);
+        state.addCommentLoading = false;
+        state.addCommentDone = true;
+        targetPost.Comments.unshift(commentTemplate(action.payload.content));
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.addCommentLoading = false;
+        state.addCommentError = action.error.message;
       }),
 });
