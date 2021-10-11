@@ -46,3 +46,12 @@ export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI)
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
+export const editProfile = createAsyncThunk('user/editProfile', async (data, thunkAPI) => {
+  try {
+    // const response = await axios.post(`/editProfile`);
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});

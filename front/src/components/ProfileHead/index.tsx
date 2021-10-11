@@ -1,6 +1,7 @@
 import React from 'react';
+import Link from 'next/link';
+import { Button } from 'antd';
 
-import ProfileEditButton from './ProfileEditButton';
 import FollowButton from './FollowButton';
 import { ProfileHeadWrapper, MyUserInfo, MyPostInfo } from './styled';
 
@@ -9,8 +10,15 @@ const ProfileHead = ({ id, name, userName, postsNum, followersNum, followingsNum
     <ProfileHeadWrapper>
       <MyUserInfo>
         <h2>{userName}</h2>
-        {/* 각 버튼 기능 추가  */}
-        {isMyProfile ? <ProfileEditButton /> : <FollowButton id={id} />}
+        {isMyProfile ? (
+          <Button>
+            <Link href="/edit/profile">
+              <a> 프로필 편집 </a>
+            </Link>
+          </Button>
+        ) : (
+          <FollowButton id={id} />
+        )}
       </MyUserInfo>
       {/* 팔로워, 팔로우 클릭 시 확인  */}
       <MyPostInfo>

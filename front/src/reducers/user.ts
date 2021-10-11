@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { login, logout, signup, follow, unfollow } from '../actions/user';
+import { login, logout, signup, follow, unfollow, editProfile } from '../actions/user';
 
 const userTemplate = (data) => ({
   ...data,
@@ -38,6 +38,9 @@ export const initialState = {
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
+  editProfileLoading: false,
+  editProfileDone: false,
+  editProfileError: null,
 };
 
 export const userSlice = createSlice({
@@ -123,5 +126,21 @@ export const userSlice = createSlice({
       .addCase(unfollow.rejected, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowError = action.error.message;
+      })
+
+      // editProfile
+      .addCase(editProfile.pending, (state) => {
+        state.editProfileLoading = true;
+        state.editProfileDone = false;
+        state.editProfileError = null;
+      })
+      .addCase(editProfile.fulfilled, (state, action) => {
+        state.editProfileLoading = false;
+        state.editProfileDone = true;
+        state.myInfo = { ...state.myInfo, name: action.payload.name, userName: action.payload.userName };
+      })
+      .addCase(editProfile.rejected, (state, action) => {
+        state.editProfileLoading = false;
+        state.editProfileError = action.error.message;
       }),
 });
