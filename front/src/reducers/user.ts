@@ -32,6 +32,12 @@ export const initialState = {
   signupLoading: false,
   signupDone: false,
   signupError: null,
+  followLoading: false,
+  followDone: false,
+  followError: null,
+  unfollowLoading: false,
+  unfollowDone: false,
+  unfollowError: null,
 };
 
 export const userSlice = createSlice({
@@ -78,12 +84,44 @@ export const userSlice = createSlice({
         state.signupDone = false;
         state.signupError = null;
       })
-      .addCase(signup.fulfilled, (state) => {
+      .addCase(signup.fulfilled, (state, action) => {
         state.signupLoading = false;
         state.signupDone = true;
       })
       .addCase(signup.rejected, (state, action) => {
         state.signupLoading = false;
         state.signupError = action.error.message;
+      })
+
+      // follow
+      .addCase(follow.pending, (state) => {
+        state.followLoading = true;
+        state.followDone = false;
+        state.followError = null;
+      })
+      .addCase(follow.fulfilled, (state, action) => {
+        state.followLoading = false;
+        state.followDone = true;
+        state.myInfo.Followings.push({ id: action.payload });
+      })
+      .addCase(follow.rejected, (state, action) => {
+        state.followLoading = false;
+        state.followError = action.error.message;
+      })
+
+      // unfollow
+      .addCase(unfollow.pending, (state) => {
+        state.unfollowLoading = true;
+        state.unfollowDone = false;
+        state.unfollowError = null;
+      })
+      .addCase(unfollow.fulfilled, (state, action) => {
+        state.unfollowLoading = false;
+        state.unfollowDone = true;
+        state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload);
+      })
+      .addCase(unfollow.rejected, (state, action) => {
+        state.unfollowLoading = false;
+        state.unfollowError = action.error.message;
       }),
 });

@@ -29,3 +29,20 @@ export const signup = createAsyncThunk('user/signup', async (data, thunkAPI) => 
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+export const follow = createAsyncThunk('user/follow', async (data, thunkAPI) => {
+  try {
+    // const response = await axios.patch(`/follow`);
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI) => {
+  try {
+    // const response = await axios.delete(`/unfollow`);
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});

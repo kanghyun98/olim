@@ -4,13 +4,13 @@ import ProfileEditButton from './ProfileEditButton';
 import FollowButton from './FollowButton';
 import { ProfileHeadWrapper, MyUserInfo, MyPostInfo } from './styled';
 
-const ProfileHead = ({ name, userName, postsNum, followersNum, followingsNum, isMyProfile }) => {
+const ProfileHead = ({ id, name, userName, postsNum, followersNum, followingsNum, isMyProfile }) => {
   return (
     <ProfileHeadWrapper>
       <MyUserInfo>
         <h2>{userName}</h2>
         {/* 각 버튼 기능 추가  */}
-        {isMyProfile ? <ProfileEditButton /> : <FollowButton />}
+        {isMyProfile ? <ProfileEditButton /> : <FollowButton id={id} />}
       </MyUserInfo>
       {/* 팔로워, 팔로우 클릭 시 확인  */}
       <MyPostInfo>
