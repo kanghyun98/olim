@@ -1,6 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { login, logout, signup } from '../actions/user';
+import { login, logout, signup, follow, unfollow } from '../actions/user';
+
+const userTemplate = (data) => ({
+  ...data,
+  id: 1,
+  name: '이강현',
+  userName: 'kanghyun',
+  Posts: [{ id: 1 }],
+  Followings: [
+    { userName: '강현', id: 2 },
+    { userName: 'LKH', id: 3 },
+    { userName: 'kanghyun', id: 4 },
+  ],
+  Followers: [
+    { userName: '강현', id: 5 },
+    { userName: '깡현', id: 6 },
+    { userName: 'KANG', id: 7 },
+  ],
+});
 
 export const initialState = {
   myInfo: null,
@@ -31,7 +49,7 @@ export const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loginLoading = false;
         state.loginDone = true;
-        state.myInfo = action.payload;
+        state.myInfo = userTemplate(action.payload);
       })
       .addCase(login.rejected, (state, action) => {
         state.loginLoading = false;
