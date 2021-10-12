@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true;
 
 export const loadAllPosts = createAsyncThunk('post/loadAllPosts', async (data, thunkAPI) => {
   try {
-    // const response = await axios.get(`/posts`);
+    // const response = await axios.get(`/posts?lastId=${lastId || 0}`);
     return generateDummyPost(10);
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);

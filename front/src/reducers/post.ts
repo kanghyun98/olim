@@ -54,6 +54,7 @@ const commentTemplate = (data) => ({
 export const initialState = {
   posts: [],
   imagePaths: [],
+  morePosts: true,
   loadAllPostsLoading: false,
   loadAllPostsDone: false,
   loadAllPostsError: null,
@@ -87,6 +88,7 @@ export const postSlice = createSlice({
         state.loadAllPostsLoading = false;
         state.loadAllPostsDone = true;
         state.posts = state.posts.concat(action.payload);
+        state.morePosts = state.posts.length < 50;
       })
       .addCase(loadAllPosts.rejected, (state, action) => {
         state.loadAllPostsLoading = false;
