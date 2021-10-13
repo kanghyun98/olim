@@ -17,7 +17,7 @@ const SignUp = () => {
   return (
     <>
       <Head>
-        <title>회원가입 | noname</title>
+        <title>회원가입 | olim</title>
       </Head>
       <SignUpForm />
     </>

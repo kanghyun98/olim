@@ -17,7 +17,7 @@ const Login = () => {
   return (
     <>
       <Head>
-        <title>로그인 | noname</title>
+        <title>로그인 | olim</title>
       </Head>
       <LoginForm />
     </>

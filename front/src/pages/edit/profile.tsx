@@ -17,7 +17,7 @@ const EditProfile = () => {
   return (
     <>
       <Head>
-        <title>프로필 편집 | noname</title>
+        <title>프로필 편집 | olim</title>
       </Head>
       <EditProfileForm />
     </>

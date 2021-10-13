@@ -29,7 +29,7 @@ const Profile = () => {
   return (
     <>
       <Head>
-        <title>{`@${someoneInfo.userName}`}</title>
+        <title>{`@${someoneInfo.userName} | olim`}</title>
       </Head>
       <ProfileHead
         id={someoneInfo.id}

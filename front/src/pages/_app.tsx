@@ -11,7 +11,7 @@ const App = ({ Component }: AppProps) => {
     <>
       <Head>
         <meta charSet="utf-8" />
-        <title>noname</title>
+        <title>olim</title>
       </Head>
       <AppLayout>
         <Component />

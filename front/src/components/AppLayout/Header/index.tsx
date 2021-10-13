@@ -37,7 +37,7 @@ const Header = () => {
       <HeaderList>
         <HomeIcon>
           <Link href="/">
-            <a>NONAME</a>
+            <a>olim</a>
           </Link>
         </HomeIcon>
         <div>
