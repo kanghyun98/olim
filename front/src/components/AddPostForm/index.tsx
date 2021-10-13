@@ -16,7 +16,7 @@ const dummy = {
 
 const AddPostForm = () => {
   const dispatch = useDispatch();
-  const { imagePaths, addPostLoading, addPostDone } = useSelector((state) => state.user);
+  const { imagePaths, addPostLoading, addPostDone } = useSelector((state) => state.post);
   const imageInput = useRef();
   const [text, onChangeText, setText] = useInput('');
 
@@ -24,7 +24,7 @@ const AddPostForm = () => {
     if (addPostDone) {
       setText('');
     }
-  }, [addPostDone]);
+  }, [addPostDone, setText]);
 
   const onSubmit = useCallback(() => {
     const formData = new FormData();
