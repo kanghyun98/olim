@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 
-const postRouter = require('./routes/post');
-const db = require('./models');
+import db from './models/index';
+import postRouter from './routes/post';
 
 const app = express();
 

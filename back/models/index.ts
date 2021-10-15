@@ -1,21 +1,17 @@
-const Sequelize = require('sequelize');
+import { Sequelize } from 'sequelize';
 
-const comment = require('./comment');
-const hashtag = require('./hashtag');
-const image = require('./image');
-const post = require('./post');
-const user = require('./user');
+import config from '../config/config';
+import comment from './comment';
+import hashtag from './hashtag';
+import image from './image';
+import post from './post';
+import user from './user';
 
 const env = process.env.NODE_ENV || 'development'; // 개발 모드에선 env: development
-const config = require('../config/config')[env];
+const { database, username, password } = config[env];
 const db = {};
 
-const sequelize = new Sequelize( // sequelize가 node와 mysql 연결
-  config.database,
-  config.username,
-  config.password,
-  config
-);
+const sequelize = new Sequelize(database, username, password, config[env]);
 
 // db에 테이블(모델) 등록
 db.Comment = comment;
@@ -36,5 +32,4 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-module.exports = db;
+export default db;

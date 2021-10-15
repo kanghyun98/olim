@@ -1,7 +1,6 @@
-const DataTypes = require('sequelize');
-const { Model } = DataTypes;
+import { Model, DataTypes } from 'sequelize';
 
-module.exports = class Post extends Model {
+class Post extends Model {
   static init(sequelize) {
     return super.init(
       {
@@ -26,4 +25,6 @@ module.exports = class Post extends Model {
     db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
     db.Post.belongsToMany(db.Post, { through: 'Like', as: 'Likers' });
   }
-};
+}
+
+export default Post;
