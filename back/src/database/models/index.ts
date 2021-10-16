@@ -7,9 +7,19 @@ import Image from './image';
 import Post from './post';
 import User from './user';
 
-const env = process.env.NODE_ENV || 'development'; // 개발 모드에선 env: development
+type EnvType = 'production' | 'test' | 'development';
+type DBType = {
+  Comment: typeof Comment;
+  Hashtag: typeof Hashtag;
+  Image: typeof Image;
+  Post: typeof Post;
+  User: typeof User;
+  [key: string]: any;
+};
+
+const env = (process.env.NODE_ENV as EnvType) || 'development';
 const { database, username, password } = config[env];
-const db = { Comment, Hashtag, Image, Post, User };
+const db: DBType = { Comment, Hashtag, Image, Post, User };
 
 export const sequelize = new Sequelize(
   database,
