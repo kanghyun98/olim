@@ -2,7 +2,21 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const config = {
+type ConfigItem = {
+  username: string;
+  password: string;
+  database: string;
+  host: string;
+  dialect: 'mysql';
+};
+
+interface ConfigList {
+  development: ConfigItem;
+  test: ConfigItem;
+  production: ConfigItem;
+}
+
+const config: ConfigList = {
   development: {
     username: 'root',
     password: process.env.DB_PASSWORD,
