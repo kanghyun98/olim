@@ -1,18 +1,17 @@
 import express from 'express';
 
 import { sequelize } from './database/models/index';
-import db from './database/models/index';
 import postRouter from './routes/post';
 
 const app = express();
 
 // db 연결
-// sequelize
-//   .sync()
-//   .then(() => {
-//     console.log('db연결 성공');
-//   })
-//   .catch(console.error);
+sequelize
+  .sync()
+  .then(() => {
+    console.log('db연결 성공');
+  })
+  .catch(console.error);
 
 app.use('/post', postRouter);
 
