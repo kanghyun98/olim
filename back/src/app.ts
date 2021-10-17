@@ -4,8 +4,10 @@ import { sequelize } from './database/models/index';
 import postRouter from './routes/post';
 
 const app = express();
+const prod = process.env.NODE_ENV === 'production';
 
-// db 연결
+app.set('port', prod ? process.env.PORT : 3065);
+
 sequelize
   .sync()
   .then(() => {
@@ -15,6 +17,6 @@ sequelize
 
 app.use('/post', postRouter);
 
-app.listen(3065, () => {
+app.listen(app.get('port'), () => {
   console.log('서버 실행 중');
 });
