@@ -1,8 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { backUrl } from '../config/config';
 
 import { generateDummyPost } from '../reducers/post';
 
+axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
 export const loadAllPosts = createAsyncThunk('post/loadAllPosts', async (data, thunkAPI) => {
