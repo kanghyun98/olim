@@ -30,8 +30,8 @@ router.post('/signup', async (req, res, next) => {
     await User.create({
       name: req.body.name,
       userId: req.body.userId,
-      password: req.body.password,
-      userName: hashedPasswrod,
+      password: hashedPasswrod,
+      userName: req.body.userName,
     });
     res.status(201).send('ok');
   } catch (error) {
