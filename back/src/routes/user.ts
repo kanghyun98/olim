@@ -1,10 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import passport from 'passport';
 
 import User from '../database/models/user';
 
 const router = express.Router();
 
+// 회원가입
 router.post('/signup', async (req, res, next) => {
   try {
     // 아이디 중복
@@ -38,6 +40,30 @@ router.post('/signup', async (req, res, next) => {
     console.log(error);
     next(error); // Express가 에러 처리 (status 500)
   }
+});
+
+// 로그인
+router.post('/login', async (req, res, next) => {
+  passport.authenticate('local', (serverErr, user, clientErr) => {
+    // 오류 처리
+    if (serverErr) {
+      console.error(serverErr);
+      return next(serverErr);
+    }
+    if (clientErr) {
+      return res.status(401).send(clientErr.message);
+    }
+
+    // passport 로그인
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        // passport 로그인 오류
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      return res.json(user); // 로그인 성공
+    });
+  })(req, res, next);
 });
 
 export default router;
