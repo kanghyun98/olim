@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 
 import { sequelize } from './database/models/index';
 import postRouter from './routes/post';
@@ -15,6 +16,12 @@ sequelize
   })
   .catch(console.error);
 
+app.use(
+  cors({
+    origin: true, // 나중에 https://olim.com
+    credentials: true, // 쿠키
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
