@@ -44,14 +44,14 @@ router.post('/signup', async (req, res, next) => {
 
 // 로그인
 router.post('/login', async (req, res, next) => {
-  passport.authenticate('local', (serverErr, user, clientErr) => {
+  passport.authenticate('local', (isError, user, errInfo) => {
     // 오류 처리
-    if (serverErr) {
-      console.error(serverErr);
-      return next(serverErr);
+    if (isError) {
+      console.error(isError);
+      return next(isError);
     }
-    if (clientErr) {
-      return res.status(401).send(clientErr.message);
+    if (errInfo) {
+      return res.status(401).send(errInfo.message);
     }
 
     // passport 로그인

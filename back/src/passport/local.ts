@@ -19,7 +19,7 @@ export default () => {
             where: { userId },
           });
           if (!user) {
-            // done(Server Error, 성공, Client Error )
+            // done(error 여부, 결과값, 실패정보)
             return done(null, false, {
               message: '존재하지 않는 아이디입니다.',
             });
