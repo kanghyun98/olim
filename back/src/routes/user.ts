@@ -4,6 +4,7 @@ import passport from 'passport';
 
 import User from '../database/models/user';
 import Post from '../database/models/post';
+import { isLoggedIn, isNotLoggedIn } from './middlewares';
 
 const router = express.Router();
 
@@ -44,7 +45,7 @@ router.post('/signup', async (req, res, next) => {
 });
 
 // 로그인
-router.post('/login', async (req, res, next) => {
+router.post('/login', isNotLoggedIn, async (req, res, next) => {
   passport.authenticate('local', (isError, user, errInfo) => {
     // 오류 처리
     if (isError) {
