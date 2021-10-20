@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import passport from 'passport';
 
 import User from '../database/models/user';
+import Post from '../database/models/post';
 
 const router = express.Router();
 
@@ -61,7 +62,28 @@ router.post('/login', async (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      return res.json(user); // 로그인 성공
+      // 로그인 성공, req.user에 정보 저장
+      const allUserData = await User.findOne({
+        where: { id: user.id },
+        attributes: { exclude: ['password'] },
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+        ],
+      });
+      return res.status(200).json(allUserData);
     });
   })(req, res, next);
 });
