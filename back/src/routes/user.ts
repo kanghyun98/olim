@@ -89,4 +89,13 @@ router.post('/login', isNotLoggedIn, async (req, res, next) => {
   })(req, res, next);
 });
 
+// 로그아웃
+router.post('/logout', isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy((error) => {
+    console.log(error);
+  }); // session에 저장된 쿠키와 id 삭제
+  res.send('ok');
+});
+
 export default router;
