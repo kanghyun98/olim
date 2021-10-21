@@ -7,12 +7,12 @@ import Image from './image';
 import Hashtag from './hashtag';
 
 interface PostsAttributes {
-  content: string;
+  text: string;
 }
 
 class Post extends Model<PostsAttributes> {
   public readonly id!: number;
-  public content!: string;
+  public text!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -20,7 +20,7 @@ class Post extends Model<PostsAttributes> {
 
 Post.init(
   {
-    content: {
+    text: {
       type: DataTypes.TEXT,
     },
   },
