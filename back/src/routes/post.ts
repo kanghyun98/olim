@@ -21,6 +21,18 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.delete('/:postId/remove', isLoggedIn, async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: { id: req.params.postId, userId: req.user.id },
+    });
+    res.status(200).json({ postId: parseInt(req.params.postId) });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const targetPost = await Post.findOne({

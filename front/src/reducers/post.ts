@@ -117,7 +117,7 @@ export const postSlice = createSlice({
       .addCase(removePost.fulfilled, (state, action) => {
         state.removePostLoading = false;
         state.removePostDone = true;
-        state.posts = state.posts.filter((v) => v.id !== action.payload);
+        state.posts = state.posts.filter((v) => v.id !== action.payload.postId);
       })
       .addCase(removePost.rejected, (state, action) => {
         state.removePostLoading = false;
