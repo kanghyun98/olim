@@ -31,17 +31,6 @@ export const generateDummyPost = (number) =>
       ],
     }));
 
-const postTemplate = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  Images: [],
-  User: {
-    id: 1,
-    userName: 'kanghyun',
-  },
-  Comments: [],
-});
-
 const commentTemplate = (data) => ({
   id: shortId.generate(),
   content: data,
@@ -120,7 +109,7 @@ export const postSlice = createSlice({
       .addCase(addPost.fulfilled, (state, action) => {
         state.addPostLoading = false;
         state.addPostDone = true;
-        state.posts.unshift(postTemplate(action.payload));
+        state.posts.unshift(action.payload);
         state.imagePaths = [];
       })
       .addCase(addPost.rejected, (state, action) => {
