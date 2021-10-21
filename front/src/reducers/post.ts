@@ -31,15 +31,6 @@ export const generateDummyPost = (number) =>
       ],
     }));
 
-const commentTemplate = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    userName: 'kanghyun',
-  },
-});
-
 export const initialState = {
   posts: [],
   imagePaths: [],
@@ -143,7 +134,7 @@ export const postSlice = createSlice({
         const targetPost = state.posts.find((v) => v.id === action.payload.postId);
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        targetPost.Comments.unshift(commentTemplate(action.payload.content));
+        targetPost.Comments.unshift(action.payload.content);
       })
       .addCase(addComment.rejected, (state, action) => {
         state.addCommentLoading = false;

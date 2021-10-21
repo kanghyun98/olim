@@ -45,8 +45,8 @@ export const removePost = createAsyncThunk('post/removePost', async (data, thunk
 
 export const addComment = createAsyncThunk('post/addComment', async (data, thunkAPI) => {
   try {
-    // const response = await axios.post('/post/`${data}/comment`', data);
-    return data;
+    const response = await axios.post(`/post/${data.postId}/comment`, data);
+    return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
   }

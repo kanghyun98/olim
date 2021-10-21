@@ -11,7 +11,7 @@ import { addComment } from '../../../actions/post';
 const CommentForm = ({ comments, postId }) => {
   const dispatch = useDispatch();
   const { addCommentLoading, addCommentDone } = useSelector((state) => state.post);
-  const userId = useSelector((state) => state.user.myInfo?.id);
+  const myId = useSelector((state) => state.user.myInfo?.id);
   const [commentInput, onChangeCommentInput, setCommentInput] = useInput('');
 
   useEffect(() => {
@@ -21,13 +21,12 @@ const CommentForm = ({ comments, postId }) => {
   }, [addCommentDone, setCommentInput]);
 
   const onSubmitComment = useCallback(() => {
-    console.log(commentInput);
-    dispatch(addComment({ content: commentInput, userId, postId }));
-  }, [commentInput, dispatch, postId, userId]);
+    dispatch(addComment({ content: commentInput, myId, postId }));
+  }, [commentInput, dispatch, myId, postId]);
 
   return (
     <CommentWrapper>
-      {userId && (
+      {myId && (
         <CommentWriteFormWrapper>
           <Form onFinish={onSubmitComment}>
             <Input.TextArea value={commentInput} onChange={onChangeCommentInput} placeholder="댓글 달기" />
