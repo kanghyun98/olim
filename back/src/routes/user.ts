@@ -85,22 +85,6 @@ router.post('/login', isNotLoggedIn, async (req, res, next) => {
       const allUserData = await User.findOne({
         where: { id: user.id },
         attributes: { exclude: ['password'] },
-        include: [
-          {
-            model: Post,
-            attributes: ['id'],
-          },
-          {
-            model: User,
-            as: 'Followings',
-            attributes: ['id'],
-          },
-          {
-            model: User,
-            as: 'Followers',
-            attributes: ['id'],
-          },
-        ],
       });
       return res.status(200).json(allUserData);
     });
