@@ -19,13 +19,9 @@ export const login = createAsyncThunk('user/login', async (data, thunkAPI) => {
   }
 });
 
-export const logout = createAsyncThunk('user/logout', async (data, thunkAPI) => {
-  try {
-    const response = await axios.post(`/logout`);
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
+export const logout = createAsyncThunk('user/logout', async () => {
+  const response = await axios.post(`/logout`);
+  return response.data;
 });
 
 export const signup = createAsyncThunk('user/signup', async (data, thunkAPI) => {
