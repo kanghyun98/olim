@@ -5,6 +5,11 @@ import { backUrl } from '../config/config';
 axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
+export const loadMyInfo = createAsyncThunk('user/loadMyInfo', async () => {
+  const response = await axios.get(`/user/loadMyInfo`);
+  return response.data;
+});
+
 export const login = createAsyncThunk('user/login', async (data, thunkAPI) => {
   try {
     const response = await axios.post(`/user/login`, data);

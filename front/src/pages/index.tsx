@@ -6,6 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import AddPostForm from '../components/AddPostForm';
 import PostItem from '../components/PostItem';
 import { loadAllPosts } from '../actions/post';
+import { loadMyInfo } from '../actions/user';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,15 +18,12 @@ const Home = () => {
     if (!myInfo) {
       Router.push('/login');
     }
-  }, [myInfo]);
-
-  useEffect(() => {
-    console.log('infinite');
     if (myInfo && inView && morePosts && !loadAllPostsLoading) {
       const lastId = posts[posts.length - 1]?.id;
-      return dispatch(loadAllPosts(lastId));
+      dispatch(loadMyInfo());
+      dispatch(loadAllPosts(lastId));
     }
-  }, [inView, loadAllPostsLoading, morePosts, myInfo, posts]);
+  }, [dispatch, inView, loadAllPostsLoading, morePosts, myInfo, posts]);
 
   return (
     <>

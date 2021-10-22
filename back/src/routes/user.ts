@@ -8,6 +8,24 @@ import { isLoggedIn, isNotLoggedIn } from './middlewares';
 
 const router = express.Router();
 
+// 내 정보 요청 (쿠키 서버로 전달, 새로고침 시마다)
+router.get('/loadMyInfo', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const allUserData = await User.findOne({
+        where: { id: req.user.id },
+        attributes: { exclude: ['password'] },
+      });
+      res.status(200).json(allUserData);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+});
+
 // 회원가입
 router.post('/signup', async (req, res, next) => {
   try {

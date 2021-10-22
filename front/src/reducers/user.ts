@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { login, logout, signup, follow, unfollow, editProfile } from '../actions/user';
+import { loadMyInfo, login, logout, signup, follow, unfollow, editProfile } from '../actions/user';
 
 export const initialState = {
   myInfo: null,
   userInfo: null,
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   loginLoading: false,
   loginDone: false,
   loginError: null,
@@ -31,6 +34,22 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // 내 정보 불러오기
+      .addCase(loadMyInfo.pending, (state) => {
+        state.loadMyInfoLoading = true;
+        state.loadMyInfoDone = false;
+        state.loadMyInfoError = null;
+      })
+      .addCase(loadMyInfo.fulfilled, (state, action) => {
+        state.loadMyInfoLoading = false;
+        state.loadMyInfoDone = true;
+        state.myInfo = action.payload;
+      })
+      .addCase(loadMyInfo.rejected, (state, action) => {
+        state.loadMyInfoLoading = false;
+        state.loadMyInfoError = action.error.message;
+      })
+
       // login
       .addCase(login.pending, (state) => {
         state.loginLoading = true;
