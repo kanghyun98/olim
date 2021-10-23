@@ -22,6 +22,7 @@ sequelize
   })
   .catch(console.error);
 
+app.use(morgan('dev'));
 app.use(
   cors({
     origin: true, // 나중에 https://olim.com
