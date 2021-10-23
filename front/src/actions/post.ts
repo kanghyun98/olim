@@ -51,3 +51,21 @@ export const addComment = createAsyncThunk('post/addComment', async (data, thunk
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
+export const likePost = createAsyncThunk('post/likePost', async (data, thunkAPI) => {
+  try {
+    const response = await axios.patch(`/post/${data.postId}/like`, data);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const unlikePost = createAsyncThunk('post/unlikePost', async (data, thunkAPI) => {
+  try {
+    const response = await axios.delete(`/post/${data.postId}/like`, data);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});

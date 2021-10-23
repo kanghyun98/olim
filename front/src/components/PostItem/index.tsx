@@ -8,19 +8,23 @@ import PostImages from './PostImages';
 import ContentLink from './ContentLink';
 import CommentForm from './CommentForm';
 import { CardWrapper, HeaderLink } from './styled';
-import { removePost } from '../../actions/post';
+import { removePost, likePost, unlikePost } from '../../actions/post';
 
 const PostItem = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.user);
   const [commentOpenedAll, setCommentOpenedAll] = useState(false);
-  const [like, setLike] = useState(false);
+  const liked = post.Likers.find((v) => v.id === id);
 
-  const onToggleLike = useCallback(() => {
-    setLike((prev) => !prev);
-  }, []);
+  const onLikePost = useCallback(() => {
+    return dispatch(likePost({ postId: post.id }));
+  }, [dispatch, post.id]);
 
-  const onToggleComment = useCallback(() => {
+  const onUnlikePost = useCallback(() => {
+    return dispatch(unlikePost({ postId: post.id }));
+  }, [dispatch, post.id]);
+
+  const onToggleShowComments = useCallback(() => {
     setCommentOpenedAll((prev) => !prev);
   }, []);
 
@@ -33,12 +37,12 @@ const PostItem = ({ post }) => {
       <Card
         cover={<PostImages images={post.Images} />}
         actions={[
-          like ? (
-            <HeartFilled key="heart" onClick={onToggleLike} style={{ color: 'red' }} />
+          liked ? (
+            <HeartFilled key="heart" onClick={onUnlikePost} style={{ color: 'red' }} />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onLikePost} />
           ),
-          <MessageOutlined key="message" onClick={onToggleComment} />,
+          <MessageOutlined key="message" onClick={onToggleShowComments} />,
           <Popover
             key="ellipsis"
             content={

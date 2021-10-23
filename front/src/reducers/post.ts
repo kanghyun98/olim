@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import shortId from 'shortid';
 import faker from 'faker';
 
-import { loadAllPosts, loadUserPosts, addPost, removePost, addComment } from '../actions/post';
+import { loadAllPosts, loadUserPosts, addPost, removePost, addComment, likePost, unlikePost } from '../actions/post';
 
 export const generateDummyPost = (number) =>
   Array(number)
@@ -50,6 +50,12 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
 };
 
 export const postSlice = createSlice({
@@ -139,5 +145,39 @@ export const postSlice = createSlice({
       .addCase(addComment.rejected, (state, action) => {
         state.addCommentLoading = false;
         state.addCommentError = action.error.message;
+      })
+
+      // likePost
+      .addCase(likePost.pending, (state) => {
+        state.likePostLoading = true;
+        state.likePostDone = false;
+        state.likePostError = null;
+      })
+      .addCase(likePost.fulfilled, (state, action) => {
+        const targetPost = state.posts.find((v) => v.id === action.payload.postId);
+        state.likePostLoading = false;
+        state.likePostDone = true;
+        targetPost.Likers.push({ id: action.payload.userId });
+      })
+      .addCase(likePost.rejected, (state, action) => {
+        state.likePostLoading = false;
+        state.likePostError = action.error.message;
+      })
+
+      // unlikePost
+      .addCase(unlikePost.pending, (state) => {
+        state.unlikePostLoading = true;
+        state.unlikePostDone = false;
+        state.unlikePostError = null;
+      })
+      .addCase(unlikePost.fulfilled, (state, action) => {
+        const targetPost = state.posts.find((v) => v.id === action.payload.postId);
+        state.unlikePostLoading = false;
+        state.unlikePostDone = true;
+        targetPost.Likers.filter((v) => v.id !== action.payload.userId);
+      })
+      .addCase(unlikePost.rejected, (state, action) => {
+        state.unlikePostLoading = false;
+        state.unlikePostError = action.error.message;
       }),
 });

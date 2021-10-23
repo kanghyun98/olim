@@ -90,4 +90,37 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 게시글 좋아요
+router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.addLikers(req.user.id);
+    res.json({ postId: post.id, userId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.removeLikers(req.user.id);
+    res.json({ postId: post.id, userId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 export default router;
