@@ -4,10 +4,12 @@ import passport from 'passport';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 
 import { sequelize } from './database/models/index';
-import postRouter from './routes/post';
 import userRouter from './routes/user';
+import postRouter from './routes/post';
+import postsRouter from './routes/posts';
 
 dotenv.config();
 const app = express();
@@ -50,6 +52,7 @@ app.use(passport.session());
 
 app.use('/user', userRouter);
 app.use('/post', postRouter);
+app.use('/posts', postsRouteruter);
 
 app.listen(app.get('port'), () => {
   console.log('서버 실행 중');

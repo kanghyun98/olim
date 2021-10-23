@@ -21,7 +21,7 @@ const Home = () => {
     if (myInfo && inView && morePosts && !loadAllPostsLoading) {
       const lastId = posts[posts.length - 1]?.id;
       dispatch(loadMyInfo());
-      dispatch(loadAllPosts(lastId));
+      dispatch(loadAllPosts({ lastId }));
     }
   }, [dispatch, inView, loadAllPostsLoading, morePosts, myInfo, posts]);
 
