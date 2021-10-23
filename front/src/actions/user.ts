@@ -6,7 +6,7 @@ axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
 export const loadMyInfo = createAsyncThunk('user/loadMyInfo', async () => {
-  const response = await axios.get(`/user/loadMyInfo`);
+  const response = await axios.get(`/user/myinfo`);
   return response.data;
 });
 
