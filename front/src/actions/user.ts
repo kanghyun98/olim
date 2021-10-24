@@ -10,6 +10,15 @@ export const loadMyInfo = createAsyncThunk('user/loadMyInfo', async () => {
   return response.data;
 });
 
+export const signup = createAsyncThunk('user/signup', async (data, thunkAPI) => {
+  try {
+    const response = await axios.post(`/user/signup`, data);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 export const login = createAsyncThunk('user/login', async (data, thunkAPI) => {
   try {
     const response = await axios.post(`/user/login`, data);
@@ -20,18 +29,19 @@ export const login = createAsyncThunk('user/login', async (data, thunkAPI) => {
 });
 
 export const logout = createAsyncThunk('user/logout', async () => {
-  const response = await axios.post(`/logout`);
+  const response = await axios.post(`/user/logout`);
   return response.data;
 });
 
-export const signup = createAsyncThunk('user/signup', async (data, thunkAPI) => {
+export const editProfile = createAsyncThunk('user/editProfile', async (data, thunkAPI) => {
   try {
-    const response = await axios.post(`/user/signup`, data);
+    const response = await axios.patch(`/user/edit/profile`, data);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
 export const follow = createAsyncThunk('user/follow', async (data, thunkAPI) => {
   try {
     // const response = await axios.patch(`/follow`);
@@ -44,15 +54,6 @@ export const follow = createAsyncThunk('user/follow', async (data, thunkAPI) => 
 export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI) => {
   try {
     // const response = await axios.delete(`/unfollow`);
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
-});
-
-export const editProfile = createAsyncThunk('user/editProfile', async (data, thunkAPI) => {
-  try {
-    // const response = await axios.post(`/editProfile`);
     return data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);

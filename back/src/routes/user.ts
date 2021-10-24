@@ -100,4 +100,23 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.send('ok');
 });
 
+// 프로필 수정
+router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update(
+      {
+        name: req.body.name,
+        userName: req.body.userName,
+      },
+      {
+        where: { id: req.user.id },
+      }
+    );
+    res.status(200).json({ name: req.body.name, userName: req.body.userName });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 export default router;
