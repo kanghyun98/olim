@@ -122,7 +122,7 @@ export const userSlice = createSlice({
       .addCase(follow.fulfilled, (state, action) => {
         state.followLoading = false;
         state.followDone = true;
-        // state.myInfo.Followings.push({ id: action.payload });
+        state.myInfo.Followings.push({ id: action.payload });
       })
       .addCase(follow.rejected, (state, action) => {
         state.followLoading = false;
