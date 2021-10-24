@@ -1,10 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { loadMyInfo, login, logout, signup, follow, unfollow, editProfile } from '../actions/user';
+import {
+  loadMyInfo,
+  login,
+  logout,
+  signup,
+  editProfile,
+  follow,
+  unfollow,
+  loadFollowings,
+  loadFollowers,
+} from '../actions/user';
 
 export const initialState = {
   myInfo: null,
   userInfo: null,
+  dataList: null,
   loadMyInfoLoading: false,
   loadMyInfoDone: false,
   loadMyInfoError: null,
@@ -17,15 +28,21 @@ export const initialState = {
   signupLoading: false,
   signupDone: false,
   signupError: null,
+  editProfileLoading: false,
+  editProfileDone: false,
+  editProfileError: null,
   followLoading: false,
   followDone: false,
   followError: null,
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
-  editProfileLoading: false,
-  editProfileDone: false,
-  editProfileError: null,
+  loadFollowingsLoading: false,
+  loadFollowingsDone: false,
+  loadFollowingsError: null,
+  loadFollowersLoading: false,
+  loadFollowersDone: false,
+  loadFollowersError: null,
 };
 
 export const userSlice = createSlice({
@@ -138,10 +155,44 @@ export const userSlice = createSlice({
       .addCase(unfollow.fulfilled, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowDone = true;
-        // state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload);
+        state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload);
       })
       .addCase(unfollow.rejected, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowError = action.error.message;
+      })
+
+      // loadFollowings
+      .addCase(loadFollowings.pending, (state) => {
+        state.loadFollowingsLoading = true;
+        state.loadFollowingsDone = false;
+        state.loadFollowingsError = null;
+        state.dataList = null;
+      })
+      .addCase(loadFollowings.fulfilled, (state, action) => {
+        state.loadFollowingsLoading = false;
+        state.loadFollowingsDone = true;
+        state.dataList = action.payload;
+      })
+      .addCase(loadFollowings.rejected, (state, action) => {
+        state.loadFollowingsLoading = false;
+        state.loadFollowingsError = action.error.message;
+      })
+
+      // loadFollowers
+      .addCase(loadFollowers.pending, (state) => {
+        state.loadFollowersLoading = true;
+        state.loadFollowersDone = false;
+        state.loadFollowersError = null;
+        state.dataList = null;
+      })
+      .addCase(loadFollowers.fulfilled, (state, action) => {
+        state.loadFollowersLoading = false;
+        state.loadFollowersDone = true;
+        state.dataList = action.payload;
+      })
+      .addCase(loadFollowers.rejected, (state, action) => {
+        state.loadFollowersLoading = false;
+        state.loadFollowersError = action.error.message;
       }),
 });

@@ -183,4 +183,38 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 팔로잉 리스트
+router.get('/:userId/followings', async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (!user) {
+      res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+    const followings = await user.getFollowings({
+      // limit: parseInt(req.query.limit, 10),
+    });
+    res.status(200).json(followings);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// 팔로우 리스트
+router.get('/:userId/followers', async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (!user) {
+      res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+    const followers = await user.getFollowers({
+      // limit: parseInt(req.query.limit, 10),
+    });
+    res.status(200).json(followers);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 export default router;

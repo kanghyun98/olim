@@ -59,3 +59,21 @@ export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI)
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+
+export const loadFollowings = createAsyncThunk('user/loadFollowings', async (data, thunkAPI) => {
+  try {
+    const response = await axios.get(`/user/${data}/followings`);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const loadFollowers = createAsyncThunk('user/loadFollowers', async (data, thunkAPI) => {
+  try {
+    const response = await axios.get(`/user/${data}/followers`);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
