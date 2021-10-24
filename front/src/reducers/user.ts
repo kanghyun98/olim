@@ -97,6 +97,22 @@ export const userSlice = createSlice({
         state.signupError = action.error.message;
       })
 
+      // editProfile
+      .addCase(editProfile.pending, (state) => {
+        state.editProfileLoading = true;
+        state.editProfileDone = false;
+        state.editProfileError = null;
+      })
+      .addCase(editProfile.fulfilled, (state, action) => {
+        state.editProfileLoading = false;
+        state.editProfileDone = true;
+        state.myInfo = { ...state.myInfo, name: action.payload.name, userName: action.payload.userName };
+      })
+      .addCase(editProfile.rejected, (state, action) => {
+        state.editProfileLoading = false;
+        state.editProfileError = action.error.message;
+      })
+
       // follow
       .addCase(follow.pending, (state) => {
         state.followLoading = true;
@@ -106,7 +122,7 @@ export const userSlice = createSlice({
       .addCase(follow.fulfilled, (state, action) => {
         state.followLoading = false;
         state.followDone = true;
-        state.myInfo.Followings.push({ id: action.payload });
+        // state.myInfo.Followings.push({ id: action.payload });
       })
       .addCase(follow.rejected, (state, action) => {
         state.followLoading = false;
@@ -122,26 +138,10 @@ export const userSlice = createSlice({
       .addCase(unfollow.fulfilled, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowDone = true;
-        state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload);
+        // state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload);
       })
       .addCase(unfollow.rejected, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowError = action.error.message;
-      })
-
-      // editProfile
-      .addCase(editProfile.pending, (state) => {
-        state.editProfileLoading = true;
-        state.editProfileDone = false;
-        state.editProfileError = null;
-      })
-      .addCase(editProfile.fulfilled, (state, action) => {
-        state.editProfileLoading = false;
-        state.editProfileDone = true;
-        state.myInfo = { ...state.myInfo, name: action.payload.name, userName: action.payload.userName };
-      })
-      .addCase(editProfile.rejected, (state, action) => {
-        state.editProfileLoading = false;
-        state.editProfileError = action.error.message;
       }),
 });

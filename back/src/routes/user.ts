@@ -119,4 +119,36 @@ router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 팔로우
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const targetUser = await User.findOne({ where: { id: req.params.userId } });
+    if (!targetUser) {
+      res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+
+    await targetUser.addFollowers(req.user.id);
+    res.status(200).json({ userId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// 언팔로우
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const targetUser = await User.findOne({ where: { id: req.params.userId } });
+    if (!targetUser) {
+      res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+
+    await targetUser.removeFollowers(req.user.id);
+    res.status(200).json({ userId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 export default router;
