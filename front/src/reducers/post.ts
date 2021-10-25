@@ -2,7 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import shortId from 'shortid';
 import faker from 'faker';
 
-import { loadAllPosts, loadUserPosts, addPost, removePost, addComment, likePost, unlikePost } from '../actions/post';
+import {
+  loadAllPosts,
+  loadUserPosts,
+  addPost,
+  uploadImages,
+  removePost,
+  removeImage,
+  addComment,
+  likePost,
+  unlikePost,
+} from '../actions/post';
 
 export const generateDummyPost = (number) =>
   Array(number)
@@ -44,9 +54,15 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+  removeImageLoading: false,
+  removeImageDone: false,
+  removeImageError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -114,6 +130,22 @@ export const postSlice = createSlice({
         state.addPostError = action.error.message;
       })
 
+      // uploadImages
+      .addCase(uploadImages.pending, (state) => {
+        state.uploadImagesLoading = true;
+        state.uploadImagesDone = false;
+        state.uploadImagesError = null;
+      })
+      .addCase(uploadImages.fulfilled, (state, action) => {
+        state.uploadImagesLoading = false;
+        state.uploadImagesDone = true;
+        state.imagePaths = state.imagePaths.concat(action.data);
+      })
+      .addCase(uploadImages.rejected, (state, action) => {
+        state.uploadImagesLoading = false;
+        state.uploadImagesError = action.error.message;
+      })
+
       // removePost
       .addCase(removePost.pending, (state) => {
         state.removePostLoading = true;
@@ -128,6 +160,22 @@ export const postSlice = createSlice({
       .addCase(removePost.rejected, (state, action) => {
         state.removePostLoading = false;
         state.removePostError = action.error.message;
+      })
+
+      // removeImage
+      .addCase(removeImage.pending, (state) => {
+        state.removeImageLoading = true;
+        state.removeImageDone = false;
+        state.removeImageError = null;
+      })
+      .addCase(removeImage.fulfilled, (state, action) => {
+        state.removeImageLoading = false;
+        state.removeImageDone = true;
+        state.imagePaths = state.imagePaths.filter((v, i) => i !== action.data);
+      })
+      .addCase(removeImage.rejected, (state, action) => {
+        state.removeImageLoading = false;
+        state.removeImageError = action.error.message;
       })
 
       // addComment
