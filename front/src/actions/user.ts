@@ -10,6 +10,15 @@ export const loadMyInfo = createAsyncThunk('user/loadMyInfo', async () => {
   return response.data;
 });
 
+export const loadUserInfo = createAsyncThunk('user/loadUserInfo', async (data, thunkAPI) => {
+  try {
+    const response = await axios.get(`/user/${data.userId}`);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 export const signup = createAsyncThunk('user/signup', async (data, thunkAPI) => {
   try {
     const response = await axios.post(`/user/signup`, data);

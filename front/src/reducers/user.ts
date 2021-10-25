@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
   loadMyInfo,
+  loadUserInfo,
   login,
   logout,
   signup,
@@ -19,6 +20,9 @@ export const initialState = {
   loadMyInfoLoading: false,
   loadMyInfoDone: false,
   loadMyInfoError: null,
+  loadUserInfoLoading: false,
+  loadUserInfoDone: false,
+  loadUserInfoError: null,
   loginLoading: false,
   loginDone: false,
   loginError: null,
@@ -65,6 +69,22 @@ export const userSlice = createSlice({
       .addCase(loadMyInfo.rejected, (state, action) => {
         state.loadMyInfoLoading = false;
         state.loadMyInfoError = action.error.message;
+      })
+
+      // 유저 정보 불러오기
+      .addCase(loadUserInfo.pending, (state) => {
+        state.loadUserInfoLoading = true;
+        state.loadUserInfoDone = false;
+        state.loadUserInfoError = null;
+      })
+      .addCase(loadUserInfo.fulfilled, (state, action) => {
+        state.loadUserInfoLoading = false;
+        state.loadUserInfoDone = true;
+        state.userInfo = action.payload;
+      })
+      .addCase(loadUserInfo.rejected, (state, action) => {
+        state.loadUserInfoLoading = false;
+        state.loadUserInfoError = action.error.message;
       })
 
       // login
