@@ -52,7 +52,7 @@ app.use(passport.session());
 
 app.use('/user', userRouter);
 app.use('/post', postRouter);
-app.use('/posts', postsRouteruter);
+app.use('/posts', postsRouter);
 
 app.listen(app.get('port'), () => {
   console.log('서버 실행 중');
