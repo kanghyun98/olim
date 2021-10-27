@@ -8,7 +8,6 @@ import {
   addPost,
   uploadImages,
   removePost,
-  removeImage,
   addComment,
   likePost,
   unlikePost,
@@ -60,9 +59,6 @@ export const initialState = {
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
-  removeImageLoading: false,
-  removeImageDone: false,
-  removeImageError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -77,7 +73,11 @@ export const initialState = {
 export const postSlice = createSlice({
   name: 'post',
   initialState,
-  reducers: {},
+  reducers: {
+    removeImage: (state, action) => {
+      state.imagePaths = state.imagePaths.filter((v, i) => i !== action.payload);
+    },
+  },
   extraReducers: (builder) =>
     builder
       // loadAllPosts
@@ -162,22 +162,6 @@ export const postSlice = createSlice({
         state.removePostError = action.error.message;
       })
 
-      // removeImage
-      .addCase(removeImage.pending, (state) => {
-        state.removeImageLoading = true;
-        state.removeImageDone = false;
-        state.removeImageError = null;
-      })
-      .addCase(removeImage.fulfilled, (state, action) => {
-        state.removeImageLoading = false;
-        state.removeImageDone = true;
-        state.imagePaths = state.imagePaths.filter((v, i) => i !== action.data);
-      })
-      .addCase(removeImage.rejected, (state, action) => {
-        state.removeImageLoading = false;
-        state.removeImageError = action.error.message;
-      })
-
       // addComment
       .addCase(addComment.pending, (state) => {
         state.addCommentLoading = true;
@@ -229,3 +213,5 @@ export const postSlice = createSlice({
         state.unlikePostError = action.error.message;
       }),
 });
+
+export const { removeImage } = postSlice.actions;

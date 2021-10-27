@@ -5,7 +5,8 @@ import { CloseOutlined } from '@ant-design/icons';
 
 import useInput from '../../hooks/useInput';
 import { FormWrapper, TextBox, PreviewImagesWrapper, ImageWrapper, ButtonsWrapper } from './styled';
-import { addPost, uploadImages, removeImage } from '../../actions/post';
+import { addPost, uploadImages } from '../../actions/post';
+import { removeImage } from '../../reducers/post';
 
 const AddPostForm = () => {
   const dispatch = useDispatch();
