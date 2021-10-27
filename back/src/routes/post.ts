@@ -1,4 +1,7 @@
 import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
 import User from '../database/models/user';
 import Post from '../database/models/post';
@@ -8,8 +11,31 @@ import { isLoggedIn } from './middlewares';
 
 const router = express.Router();
 
+// 폴더 생성
+try {
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads 폴더가 존재하지 않아 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+
+// multiform data 처리 - 하드디스크
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads'); // uploads 폴더에 저장
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+      const basename = path.basename(file.originalname, ext);
+      done(null, basename + '_' + new Date().getTime() + ext);
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB 제한
+});
+
 // 게시글 작성
-router.post('/', isLoggedIn, async (req, res, next) => {
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const postTags = req.body.text.match(/#[^\s#@]+/g);
     const post = await Post.create({
@@ -43,6 +69,12 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     console.log(error);
     next(error); // Express가 에러 처리 (status 500)
   }
+});
+
+// 이미지 게시 (선행 작업)
+router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
+  console.log(req.files);
+  res.json(req.files.map((v) => v.filename));
 });
 
 // 게시글 제거

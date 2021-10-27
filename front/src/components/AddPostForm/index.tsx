@@ -76,7 +76,7 @@ const AddPostForm = () => {
         })}
       </PreviewImagesWrapper>
       <ButtonsWrapper>
-        <input type="file" multiple hidden ref={imageInput} onChange={onUploadImages} />
+        <input type="file" name="image" multiple hidden ref={imageInput} onChange={onUploadImages} />
         <Button onClick={onClickAddImage}>이미지 업로드</Button>
         <Button htmlType="submit" loading={addPostLoading}>
           작성 완료
