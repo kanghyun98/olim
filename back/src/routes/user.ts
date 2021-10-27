@@ -32,9 +32,9 @@ router.get('/myinfo', async (req, res, next) => {
           },
         ],
       });
-      res.status(200).json(allUserData);
+      return res.status(200).json(allUserData);
     } else {
-      res.status(200).json(null);
+      return res.status(200).json(null);
     }
   } catch (error) {
     console.error(error);
@@ -64,17 +64,17 @@ router.post('/signup', async (req, res, next) => {
       return res.status(403).send('이미 사용중인 username입니다.');
     }
 
-    const hashedPasswrod = await bcrypt.hash(req.body.password, 12);
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
     await User.create({
       name: req.body.name,
       userId: req.body.userId,
-      password: hashedPasswrod,
+      password: hashedPassword,
       userName: req.body.userName,
     });
-    res.status(201).send('ok');
+    return res.status(201).send('ok');
   } catch (error) {
     console.log(error);
-    next(error); // Express가 에러 처리 (status 500)
+    return next(error); // Express가 에러 처리 (status 500)
   }
 });
 
@@ -129,7 +129,7 @@ router.post('/logout', isLoggedIn, (req, res) => {
   req.session.destroy((error) => {
     console.log(error);
   }); // session에 저장된 쿠키와 id 삭제
-  res.send('ok');
+  return res.send('ok');
 });
 
 // 프로필 수정
@@ -144,10 +144,12 @@ router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
         where: { id: req.user.id },
       }
     );
-    res.status(200).json({ name: req.body.name, userName: req.body.userName });
+    return res
+      .status(200)
+      .json({ name: req.body.name, userName: req.body.userName });
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 });
 
@@ -156,14 +158,14 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
     const targetUser = await User.findOne({ where: { id: req.params.userId } });
     if (!targetUser) {
-      res.status(403).send('존재하지 않는 사용자입니다.');
+      return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
     await targetUser.addFollowers(req.user.id);
-    res.status(200).json({ userId: parseInt(req.params.userId, 10) });
+    return res.status(200).json({ userId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 });
 
@@ -172,14 +174,14 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
     const targetUser = await User.findOne({ where: { id: req.params.userId } });
     if (!targetUser) {
-      res.status(403).send('존재하지 않는 사용자입니다.');
+      return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
     await targetUser.removeFollowers(req.user.id);
-    res.status(200).json({ userId: parseInt(req.params.userId, 10) });
+    return res.status(200).json({ userId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 });
 
@@ -188,15 +190,15 @@ router.get('/:userId/followings', async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.params.userId } });
     if (!user) {
-      res.status(403).send('존재하지 않는 사용자입니다.');
+      return res.status(403).send('존재하지 않는 사용자입니다.');
     }
     const followings = await user.getFollowings({
       // limit: parseInt(req.query.limit, 10),
     });
-    res.status(200).json(followings);
+    return res.status(200).json(followings);
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 });
 
@@ -205,15 +207,15 @@ router.get('/:userId/followers', async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.params.userId } });
     if (!user) {
-      res.status(403).send('존재하지 않는 사용자입니다.');
+      return res.status(403).send('존재하지 않는 사용자입니다.');
     }
     const followers = await user.getFollowers({
       // limit: parseInt(req.query.limit, 10),
     });
-    res.status(200).json(followers);
+    return res.status(200).json(followers);
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 });
 
