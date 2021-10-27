@@ -7,6 +7,7 @@ import useInput from '../../hooks/useInput';
 import { FormWrapper, TextBox, PreviewImagesWrapper, ImageWrapper, ButtonsWrapper } from './styled';
 import { addPost, uploadImages } from '../../actions/post';
 import { removeImage } from '../../reducers/post';
+import { imageUrl } from '../../config/config';
 
 const AddPostForm = () => {
   const dispatch = useDispatch();
@@ -24,9 +25,9 @@ const AddPostForm = () => {
   const onSubmit = useCallback(() => {
     const formData = new FormData();
     imagePaths.forEach((img) => {
-      formData.append('image', img);
+      formData.append('image', img); // req.body.image
     });
-    formData.append('content', text);
+    formData.append('text', text); // req.body.text
     console.log(formData);
     return dispatch(addPost(formData));
   }, [dispatch, imagePaths, text]);
@@ -71,7 +72,7 @@ const AddPostForm = () => {
               <div>
                 <CloseOutlined onClick={onClickRemoveImage(i)} />
               </div>
-              <img src={img} alt={img} />
+              <img src={`${imageUrl}/${img}`} alt={img} />
             </ImageWrapper>
           );
         })}

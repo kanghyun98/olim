@@ -7,6 +7,7 @@ import User from '../database/models/user';
 import Post from '../database/models/post';
 import Image from '../database/models/image';
 import Comment from '../database/models/comment';
+import Hashtag from '../database/models/hashtag';
 import { isLoggedIn } from './middlewares';
 
 const router = express.Router();
@@ -37,11 +38,38 @@ const upload = multer({
 // 게시글 작성
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
-    const postTags = req.body.text.match(/#[^\s#@]+/g);
     const post = await Post.create({
       text: req.body.text,
       userId: req.user.id,
     });
+
+    // 이미지
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        // 이미지 여러 개: 배열
+        const images = await Promise.all(
+          req.body.image.map((img) => Image.create({ src: img }))
+        );
+        await post.addImages(images);
+      } else {
+        // 이미지 한 개: 문자열
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
+
+    // 해시태그
+    const hashtags = req.body.text.match(/#[^\s#@]+/g);
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          })
+        )
+      );
+      await post.addHashtags(result.map((v) => v[0]));
+    }
 
     const allPostData = await Post.findOne({
       where: { id: post.id },
@@ -51,30 +79,35 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
           attributes: ['id', 'userName'],
         },
         {
-          model: Image,
+          model: Image, // 게시글 이미지
         },
         {
-          model: Comment,
+          model: Comment, // 게시글 댓글
           include: [
             {
-              model: User,
+              model: User, // 댓글 작성자
               attributes: ['id', 'userName'],
             },
           ],
         },
+        {
+          model: User, // 좋아요 누른 사람
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
-    res.status(201).json(allPostData);
+    return res.status(201).json(allPostData);
   } catch (error) {
     console.log(error);
-    next(error); // Express가 에러 처리 (status 500)
+    return next(error); // Express가 에러 처리 (status 500)
   }
 });
 
 // 이미지 게시 (선행 작업)
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
   console.log(req.files);
-  res.json(req.files.map((v) => v.filename));
+  return res.json(req.files.map((v) => v.filename));
 });
 
 // 게시글 제거
@@ -83,10 +116,10 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {
     await Post.destroy({
       where: { id: req.params.postId, userId: req.user.id },
     });
-    res.status(200).json({ postId: parseInt(req.params.postId) });
+    return res.status(200).json({ postId: parseInt(req.params.postId) });
   } catch (error) {
     console.log(error);
-    next(error);
+    return next(error);
   }
 });
 
@@ -115,10 +148,10 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
       ],
     });
 
-    res.status(201).json(commentInfo);
+    return res.status(201).json(commentInfo);
   } catch (error) {
     console.log(error);
-    next(error); // Express가 에러 처리 (status 500)
+    return next(error); // Express가 에러 처리 (status 500)
   }
 });
 
@@ -132,10 +165,10 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
       return res.status(403).send('게시글이 존재하지 않습니다.');
     }
     await post.addLikers(req.user.id);
-    res.json({ postId: post.id, userId: req.user.id });
+    return res.json({ postId: post.id, userId: req.user.id });
   } catch (error) {
     console.error(error);
-    next(error);
+    return next(error);
   }
 });
 
@@ -148,7 +181,7 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
       return res.status(403).send('게시글이 존재하지 않습니다.');
     }
     await post.removeLikers(req.user.id);
-    res.json({ postId: post.id, userId: req.user.id });
+    return res.json({ postId: post.id, userId: req.user.id });
   } catch (error) {
     console.error(error);
     next(error);

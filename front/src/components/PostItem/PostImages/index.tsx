@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { SlideList, ImageWrapper } from './styled';
+import { imageUrl } from '../../../config/config';
 
 const PostImages = ({ images }) => {
   const settings = {
@@ -13,7 +14,7 @@ const PostImages = ({ images }) => {
     <SlideList {...settings}>
       {images.map((img) => (
         <ImageWrapper key={img.src}>
-          <img src={img.src} alt={img.src} />
+          <img src={`${imageUrl}/${img.src}`} alt={img.src} />
         </ImageWrapper>
       ))}
     </SlideList>

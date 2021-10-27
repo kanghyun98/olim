@@ -5,6 +5,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+const path = require('path');
 
 import { sequelize } from './database/models/index';
 import userRouter from './routes/user';
@@ -31,8 +32,9 @@ app.use(
     credentials: true, // 쿠키
   })
 );
-app.use(express.json()); // json 형식으로 데이터 받으면 req.body에 넣어줌
-app.use(express.urlencoded({ extended: true })); // form했을 때 데이터 처리??
+app.use('/images', express.static(path.join(__dirname, 'uploads'))); // uploads 디렉토리 접근
+app.use(express.json()); // axios로 받은 데이터 처리
+app.use(express.urlencoded({ extended: true })); // 일반 form의 데이터 처리
 
 app.use(cookieParser(process.env.COOKIE_SECRET)); // cookie & session
 app.use(
