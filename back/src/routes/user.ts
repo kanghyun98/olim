@@ -46,9 +46,9 @@ router.get('/myinfo', async (req, res, next) => {
 router.post('/signup', async (req, res, next) => {
   try {
     // 아이디 중복
-    const exUserId = await User.findOne({
+    const exLoginId = await User.findOne({
       where: {
-        userId: req.body.userId,
+        loginId: req.body.loginId,
       },
     });
     // 사용자 이름 중복
@@ -58,7 +58,7 @@ router.post('/signup', async (req, res, next) => {
       },
     });
 
-    if (exUserId) {
+    if (exLoginId) {
       return res.status(403).send('이미 사용중인 아이디입니다.');
     } else if (exUserName) {
       return res.status(403).send('이미 사용중인 username입니다.');
@@ -67,7 +67,7 @@ router.post('/signup', async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     await User.create({
       name: req.body.name,
-      userId: req.body.userId,
+      loginId: req.body.loginId,
       password: hashedPassword,
       userName: req.body.userName,
     });

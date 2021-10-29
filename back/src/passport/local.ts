@@ -9,14 +9,14 @@ export default () => {
     new LocalStrategy(
       // req.body에 대한 설정
       {
-        usernameField: 'userId', //  req.body.userId
+        usernameField: 'loginId', //  req.body.loginId
         passwordField: 'password', // req.body.password
       },
       //
-      async (userId, password, done) => {
+      async (loginId, password, done) => {
         try {
           const user = await User.findOne({
-            where: { userId },
+            where: { loginId },
           });
           if (!user) {
             // done(error 여부, 결과값, 실패정보)

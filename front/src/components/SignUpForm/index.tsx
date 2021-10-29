@@ -26,7 +26,7 @@ const SignUpForm = () => {
   }, [signupDone]);
 
   const [name, onChangeName] = useInput('');
-  const [userId, onChangeUserId] = useInput(''); // 중복 검사
+  const [loginId, onChangeLoginId] = useInput(''); // 중복 검사
   const [password, setPassword] = useState('');
   const [passwordConfirmed, setPasswordConfirmed] = useState('');
   const [userName, onChangeUserName] = useInput(''); // 중복 검사
@@ -53,16 +53,16 @@ const SignUpForm = () => {
       return setPasswordError(true);
     }
 
-    console.log(name, userId, password, passwordConfirmed, userName);
+    console.log(name, loginId, password, passwordConfirmed, userName);
     return dispatch(
       signup({
         name,
-        userId,
+        loginId,
         password,
         userName,
       }),
     );
-  }, [password, passwordConfirmed, name, userId, userName, dispatch]);
+  }, [password, passwordConfirmed, name, loginId, userName, dispatch]);
 
   return (
     <Wrapper>
@@ -72,7 +72,7 @@ const SignUpForm = () => {
           <Input placeholder="이름" onChange={onChangeName} required />
         </div>
         <div>
-          <Input placeholder="아이디" onChange={onChangeUserId} required />
+          <Input placeholder="아이디" onChange={onChangeLoginId} required />
         </div>
         <div>
           <Input placeholder="비밀번호" onChange={onChangePassword} type="password" required />

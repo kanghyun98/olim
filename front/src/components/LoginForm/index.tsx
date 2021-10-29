@@ -12,7 +12,7 @@ import { login } from '../../actions/user';
 const LoginForm = () => {
   const dispatch = useDispatch();
   const { loginLoading, myInfo, loginError } = useSelector((state) => state.user);
-  const [userId, onChangeUserId] = useInput('');
+  const [loginId, onChangeLoginId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   useEffect(() => {
@@ -28,21 +28,21 @@ const LoginForm = () => {
   }, [myInfo]);
 
   const onSubmit = useCallback(() => {
-    console.log(userId, password);
+    console.log(loginId, password);
     return dispatch(
       login({
-        userId,
+        loginId,
         password,
       }),
     );
-  }, [dispatch, userId, password]);
+  }, [dispatch, loginId, password]);
 
   return (
     <Wrapper>
       <FormWrapper name="login" onFinish={onSubmit}>
         <h1>Login</h1>
         <div>
-          <Input prefix={<UserOutlined />} placeholder="아이디" onChange={onChangeUserId} required />
+          <Input prefix={<UserOutlined />} placeholder="아이디" onChange={onChangeLoginId} required />
         </div>
         <div>
           <Input
