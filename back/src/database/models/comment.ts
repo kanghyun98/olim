@@ -1,10 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface CommentsAttributes {
-  content: string;
-}
-
-class Comment extends Model<CommentsAttributes> {
+class Comment extends Model {
   public readonly id!: number;
   public content!: string;
 

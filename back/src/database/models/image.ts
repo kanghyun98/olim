@@ -1,10 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface ImagesAttributes {
-  src: string;
-}
-
-class Image extends Model<ImagesAttributes> {
+class Image extends Model {
   public readonly id!: number;
   public src!: string;
 

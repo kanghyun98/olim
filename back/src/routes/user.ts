@@ -11,9 +11,11 @@ const router = express.Router();
 // 내 정보 요청 (쿠키 서버로 전달, 새로고침 시마다)
 router.get('/myinfo', async (req, res, next) => {
   try {
+    const { myId } = req.user as User;
+
     if (req.user) {
       const allUserData = await User.findOne({
-        where: { id: req.user.id },
+        where: { id: myId },
         attributes: { exclude: ['password'] },
         include: [
           {
@@ -135,13 +137,15 @@ router.post('/logout', isLoggedIn, (req, res) => {
 // 프로필 수정
 router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
   try {
+    const { myId } = req.user as User;
+
     await User.update(
       {
         name: req.body.name,
         userName: req.body.userName,
       },
       {
-        where: { id: req.user.id },
+        where: { id: myId },
       }
     );
     return res
@@ -156,12 +160,14 @@ router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
 // 팔로우
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
+    const { myId } = req.user as User;
+
     const targetUser = await User.findOne({ where: { id: req.params.userId } });
     if (!targetUser) {
       return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
-    await targetUser.addFollowers(req.user.id);
+    await targetUser.addFollowers(myId);
     return res.status(200).json({ userId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.log(error);
@@ -172,12 +178,14 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
 // 언팔로우
 router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
+    const { myId } = req.user as User;
+
     const targetUser = await User.findOne({ where: { id: req.params.userId } });
     if (!targetUser) {
       return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
-    await targetUser.removeFollowers(req.user.id);
+    await targetUser.removeFollowers(myId);
     return res.status(200).json({ userId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.log(error);

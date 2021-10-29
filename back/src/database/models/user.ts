@@ -1,13 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface UsersAttributes {
-  loginId: string;
-  password: string;
-  userName: string;
-  name: string;
-}
-
-class User extends Model<UsersAttributes> {
+class User extends Model {
+  [x: string]: any;
   public readonly id!: number;
   public loginId!: string;
   public password!: string;

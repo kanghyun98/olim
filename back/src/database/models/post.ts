@@ -1,10 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface PostsAttributes {
-  text: string;
-}
-
-class Post extends Model<PostsAttributes> {
+class Post extends Model {
+  [x: string]: any;
   public readonly id!: number;
   public text!: string;
 

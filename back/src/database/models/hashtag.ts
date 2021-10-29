@@ -1,10 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface HashtagsAttributes {
-  tagName: string;
-}
-
-class Hashtag extends Model<HashtagsAttributes> {
+class Hashtag extends Model {
   public readonly id!: number;
   public tagName!: string;
 

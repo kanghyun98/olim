@@ -11,9 +11,15 @@ const router = express.Router();
 // Home에서 게시글 조회 (loadAllPosts, infinite scrolling)
 router.get('/', async (req, res, next) => {
   try {
-    const where = {};
-    if (parseInt(req.query.lastId, 10)) {
-      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    const { lastId } = req.query as any;
+
+    let where = {};
+    if (parseInt(lastId, 10)) {
+      where = {
+        id: {
+          [Op.lt]: parseInt(lastId, 10),
+        },
+      };
     }
 
     const posts = await Post.findAll({
