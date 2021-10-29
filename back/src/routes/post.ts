@@ -40,7 +40,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const post = await Post.create({
       text: req.body.text,
-      userId: req.user.id,
+      UserId: req.user.id,
     });
 
     // 이미지
@@ -114,7 +114,7 @@ router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
 router.delete('/:postId', isLoggedIn, async (req, res, next) => {
   try {
     await Post.destroy({
-      where: { id: req.params.postId, userId: req.user.id },
+      where: { id: req.params.postId, UserId: req.user.id },
     });
     return res.status(200).json({ postId: parseInt(req.params.postId) });
   } catch (error) {
@@ -134,8 +134,8 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
 
     const comment = await Comment.create({
       content: req.body.content,
-      postId: req.body.postId,
-      userId: req.user.id,
+      PostId: req.body.postId,
+      UserId: req.user.id,
     });
 
     const commentInfo = await Comment.findOne({
