@@ -1,10 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
-import { sequelize } from './index';
-
-import User from './user';
-import Comment from './comment';
-import Image from './image';
-import Hashtag from './hashtag';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface PostsAttributes {
   text: string;
@@ -16,27 +10,30 @@ class Post extends Model<PostsAttributes> {
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-}
 
-Post.init(
-  {
-    text: {
-      type: DataTypes.TEXT,
-    },
-  },
-  {
-    modelName: 'Post',
-    tableName: 'posts',
-    charset: 'utf8mb4', // 이모티콘 저장
-    collate: 'utf8mb4_general_ci',
-    sequelize,
+  static initModel(sequelize: Sequelize) {
+    return Post.init(
+      {
+        text: {
+          type: DataTypes.TEXT,
+        },
+      },
+      {
+        modelName: 'Post',
+        tableName: 'posts',
+        charset: 'utf8mb4', // 이모티콘 저장
+        collate: 'utf8mb4_general_ci',
+        sequelize,
+      }
+    );
   }
-);
-
-Post.hasMany(Image);
-Post.hasMany(Comment);
-Post.belongsTo(User);
-Post.belongsToMany(Hashtag, { through: 'PostHashtag' });
-Post.belongsToMany(Post, { through: 'Like', as: 'Likers' });
+  static associate(db: any) {
+    db.Post.hasMany(db.Image);
+    db.Post.hasMany(db.Comment);
+    db.Post.belongsTo(db.User);
+    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
+    db.Post.belongsToMany(db.Post, { through: 'Like', as: 'Likers' });
+  }
+}
 
 export default Post;

@@ -1,34 +1,36 @@
-import { Model, DataTypes } from 'sequelize';
-import { sequelize } from './index';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface HashtagsAttributes {
-  content: string;
+  tagName: string;
 }
 
 class Hashtag extends Model<HashtagsAttributes> {
   public readonly id!: number;
-  public content!: string;
+  public tagName!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-}
 
-Hashtag.init(
-  {
-    content: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
-  },
-  {
-    modelName: 'Hashtag',
-    tableName: 'hashtags',
-    charset: 'utf8', // 이모티콘 저장
-    collate: 'utf8_general_ci',
-    sequelize,
+  static initModel(sequelize: Sequelize) {
+    return Hashtag.init(
+      {
+        tagName: {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+        },
+      },
+      {
+        modelName: 'Hashtag',
+        tableName: 'hashtags',
+        charset: 'utf8', // 이모티콘 저장
+        collate: 'utf8_general_ci',
+        sequelize,
+      }
+    );
   }
-);
-
-Hashtag.belongsToMany(Hashtag, { through: 'PostHashtag' });
+  static associate(db: any) {
+    db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
+  }
+}
 
 export default Hashtag;

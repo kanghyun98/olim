@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 const path = require('path');
 
-import { sequelize } from './database/models/index';
+import db from './database/models/index';
 import userRouter from './routes/user';
 import postRouter from './routes/post';
 import postsRouter from './routes/posts';
@@ -18,8 +18,8 @@ const prod = process.env.NODE_ENV === 'production';
 
 app.set('port', prod ? process.env.PORT : 3065);
 
-sequelize
-  .sync({ force: true })
+db.sequelize
+  .sync() // { force: true }
   .then(() => {
     console.log('db연결 성공');
   })
