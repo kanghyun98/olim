@@ -67,7 +67,7 @@ const PostItem = ({ post }) => {
           </Link>
         }
       >
-        <ContentLink content={post.content} />
+        <ContentLink content={post.text} />
       </Card>
       {commentOpenedAll && <CommentForm comments={post.Comments} postId={post.id} />}
     </CardWrapper>
