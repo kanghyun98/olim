@@ -35,7 +35,7 @@ app.use(
     credentials: true, // 쿠키
   })
 );
-app.use('/images', express.static(path.join(__dirname, 'uploads'))); // uploads 디렉토리 접근
+app.use('/images', express.static(path.join('C:/Project/olim/back/uploads'))); // uploads 디렉토리 접근
 app.use(express.json()); // axios로 받은 데이터 처리
 app.use(express.urlencoded({ extended: true })); // 일반 form의 데이터 처리
 
