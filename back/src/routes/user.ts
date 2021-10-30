@@ -11,11 +11,10 @@ const router = express.Router();
 // 내 정보 요청 (쿠키 서버로 전달, 새로고침 시마다)
 router.get('/myinfo', async (req, res, next) => {
   try {
-    const { myId } = req.user as User;
-
     if (req.user) {
+      const { id } = req.user as User;
       const allUserData = await User.findOne({
-        where: { id: myId },
+        where: { id },
         attributes: { exclude: ['password'] },
         include: [
           {
@@ -45,7 +44,7 @@ router.get('/myinfo', async (req, res, next) => {
 });
 
 // 회원가입
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', isNotLoggedIn, async (req, res, next) => {
   try {
     // 아이디 중복
     const exLoginId = await User.findOne({
@@ -137,7 +136,7 @@ router.post('/logout', isLoggedIn, (req, res) => {
 // 프로필 수정
 router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
   try {
-    const { myId } = req.user as User;
+    const { id } = req.user as User;
 
     await User.update(
       {
@@ -145,7 +144,7 @@ router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
         userName: req.body.userName,
       },
       {
-        where: { id: myId },
+        where: { id },
       }
     );
     return res
@@ -160,14 +159,14 @@ router.patch('/edit/profile', isLoggedIn, async (req, res, next) => {
 // 팔로우
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
-    const { myId } = req.user as User;
+    const { id } = req.user as User;
 
     const targetUser = await User.findOne({ where: { id: req.params.userId } });
     if (!targetUser) {
       return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
-    await targetUser.addFollowers(myId);
+    await targetUser.addFollowers(id);
     return res.status(200).json({ userId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.log(error);
@@ -178,14 +177,14 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
 // 언팔로우
 router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
-    const { myId } = req.user as User;
+    const { id } = req.user as User;
 
     const targetUser = await User.findOne({ where: { id: req.params.userId } });
     if (!targetUser) {
       return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
-    await targetUser.removeFollowers(myId);
+    await targetUser.removeFollowers(id);
     return res.status(200).json({ userId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.log(error);

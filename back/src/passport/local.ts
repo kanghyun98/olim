@@ -12,7 +12,7 @@ export default () => {
         usernameField: 'loginId', //  req.body.loginId
         passwordField: 'password', // req.body.password
       },
-      //
+
       async (loginId, password, done) => {
         try {
           const user = await User.findOne({
