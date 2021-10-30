@@ -15,19 +15,17 @@ const Home = () => {
   const [ref, inView] = useInView();
 
   useEffect(() => {
-    if (!myInfo) {
-      Router.push('/login');
-    }
-    if (myInfo && inView && morePosts && !loadAllPostsLoading) {
+    dispatch(loadMyInfo());
+
+    if (inView && morePosts && !loadAllPostsLoading) {
       const lastId = posts[posts.length - 1]?.id;
-      dispatch(loadMyInfo());
       dispatch(loadAllPosts({ lastId }));
     }
-  }, [dispatch, inView, loadAllPostsLoading, morePosts, myInfo, posts]);
+  }, [dispatch, inView, loadAllPostsLoading, morePosts, posts]);
 
   return (
     <>
-      <AddPostForm />
+      {myInfo && <AddPostForm />}
       {posts.map((post) => {
         return <PostItem key={post.id} post={post} />;
       })}

@@ -51,10 +51,10 @@ router.get('/', async (req, res, next) => {
         },
       ],
     });
-    res.status(200).json(posts);
+    return res.status(200).json(posts);
   } catch (error) {
     console.error(error);
-    next(error);
+    return next(error);
   }
 });
 

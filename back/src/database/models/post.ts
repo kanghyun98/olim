@@ -29,7 +29,7 @@ class Post extends Model {
     db.Post.hasMany(db.Comment);
     db.Post.belongsTo(db.User);
     db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
-    db.Post.belongsToMany(db.Post, { through: 'Like', as: 'Likers' });
+    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' });
   }
 }
 
