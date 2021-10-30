@@ -11,6 +11,7 @@ import db from './database/models/index';
 import userRouter from './routes/user';
 import postRouter from './routes/post';
 import postsRouter from './routes/posts';
+import passportConfig from './passport';
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,8 @@ db.sequelize
     console.log('db연결 성공');
   })
   .catch(console.error);
+
+passportConfig();
 
 app.use(morgan('dev'));
 app.use(
