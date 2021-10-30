@@ -11,25 +11,21 @@ import { signup } from '../../actions/user';
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const { signupLoading, signupDone, signupError } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (signupError) {
-      alert(signupError);
-    }
-  }, [signupError]);
-
-  useEffect(() => {
-    if (signupDone) {
-      Router.replace('/login');
-    }
-  }, [signupDone]);
+  const { signupLoading, signupError } = useSelector((state) => state.user);
 
   const [name, onChangeName] = useInput('');
   const [loginId, onChangeLoginId] = useInput(''); // 중복 검사
   const [password, setPassword] = useState('');
   const [passwordConfirmed, setPasswordConfirmed] = useState('');
   const [userName, onChangeUserName] = useInput(''); // 중복 검사
+
+  const [passwordError, setPasswordError] = useState(false);
+
+  useEffect(() => {
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError]);
 
   const onChangePassword = useCallback(
     (e) => {
@@ -39,7 +35,6 @@ const SignUpForm = () => {
     [passwordConfirmed],
   );
 
-  const [passwordError, setPasswordError] = useState(false);
   const onChangePasswordConfirmed = useCallback(
     (e) => {
       setPasswordConfirmed(e.target.value);
@@ -53,7 +48,6 @@ const SignUpForm = () => {
       return setPasswordError(true);
     }
 
-    console.log(name, loginId, password, passwordConfirmed, userName);
     return dispatch(
       signup({
         name,
@@ -62,7 +56,7 @@ const SignUpForm = () => {
         userName,
       }),
     );
-  }, [password, passwordConfirmed, name, loginId, userName, dispatch]);
+  }, [password, passwordConfirmed, name, loginId, userName]);
 
   return (
     <Wrapper>
