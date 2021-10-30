@@ -68,7 +68,7 @@ export const userSlice = createSlice({
       })
       .addCase(loadMyInfo.rejected, (state, action) => {
         state.loadMyInfoLoading = false;
-        state.loadMyInfoError = action.error.message;
+        state.loadMyInfoError = action.payload;
       })
 
       // 유저 정보 불러오기
@@ -84,7 +84,7 @@ export const userSlice = createSlice({
       })
       .addCase(loadUserInfo.rejected, (state, action) => {
         state.loadUserInfoLoading = false;
-        state.loadUserInfoError = action.error.message;
+        state.loadUserInfoError = action.payload;
       })
 
       // login
@@ -100,7 +100,7 @@ export const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loginLoading = false;
-        state.loginError = action.error.message;
+        state.loginError = action.payload;
       })
 
       // logout
@@ -116,22 +116,23 @@ export const userSlice = createSlice({
       })
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false;
-        state.logoutError = action.error.message;
+        state.logoutError = action.payload;
       })
 
-      // signup (아직 아무것도 저장 안함)
+      // signup
       .addCase(signup.pending, (state) => {
         state.signupLoading = true;
         state.signupDone = false;
         state.signupError = null;
       })
-      .addCase(signup.fulfilled, (state, action) => {
+      .addCase(signup.fulfilled, (state) => {
         state.signupLoading = false;
         state.signupDone = true;
+        state.signupError = null;
       })
       .addCase(signup.rejected, (state, action) => {
         state.signupLoading = false;
-        state.signupError = action.error.message;
+        state.signupError = action.payload;
       })
 
       // editProfile
@@ -147,7 +148,7 @@ export const userSlice = createSlice({
       })
       .addCase(editProfile.rejected, (state, action) => {
         state.editProfileLoading = false;
-        state.editProfileError = action.error.message;
+        state.editProfileError = action.payload;
       })
 
       // follow
@@ -163,7 +164,7 @@ export const userSlice = createSlice({
       })
       .addCase(follow.rejected, (state, action) => {
         state.followLoading = false;
-        state.followError = action.error.message;
+        state.followError = action.payload;
       })
 
       // unfollow
@@ -179,7 +180,7 @@ export const userSlice = createSlice({
       })
       .addCase(unfollow.rejected, (state, action) => {
         state.unfollowLoading = false;
-        state.unfollowError = action.error.message;
+        state.unfollowError = action.payload;
       })
 
       // loadFollowings
@@ -196,7 +197,7 @@ export const userSlice = createSlice({
       })
       .addCase(loadFollowings.rejected, (state, action) => {
         state.loadFollowingsLoading = false;
-        state.loadFollowingsError = action.error.message;
+        state.loadFollowingsError = action.payload;
       })
 
       // loadFollowers
@@ -213,6 +214,6 @@ export const userSlice = createSlice({
       })
       .addCase(loadFollowers.rejected, (state, action) => {
         state.loadFollowersLoading = false;
-        state.loadFollowersError = action.error.message;
+        state.loadFollowersError = action.payload;
       }),
 });

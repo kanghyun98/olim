@@ -94,7 +94,7 @@ export const postSlice = createSlice({
       })
       .addCase(loadAllPosts.rejected, (state, action) => {
         state.loadAllPostsLoading = false;
-        state.loadAllPostsError = action.error.message;
+        state.loadAllPostsError = action.payload;
       })
 
       // loadUserPosts
@@ -110,7 +110,7 @@ export const postSlice = createSlice({
       })
       .addCase(loadUserPosts.rejected, (state, action) => {
         state.loadUserPostsLoading = false;
-        state.loadUserPostsError = action.error.message;
+        state.loadUserPostsError = action.payload;
       })
 
       // addPost
@@ -127,7 +127,7 @@ export const postSlice = createSlice({
       })
       .addCase(addPost.rejected, (state, action) => {
         state.addPostLoading = false;
-        state.addPostError = action.error.message;
+        state.addPostError = action.payload;
       })
 
       // uploadImages
@@ -143,7 +143,7 @@ export const postSlice = createSlice({
       })
       .addCase(uploadImages.rejected, (state, action) => {
         state.uploadImagesLoading = false;
-        state.uploadImagesError = action.error.message;
+        state.uploadImagesError = action.payload;
       })
 
       // removePost
@@ -159,7 +159,7 @@ export const postSlice = createSlice({
       })
       .addCase(removePost.rejected, (state, action) => {
         state.removePostLoading = false;
-        state.removePostError = action.error.message;
+        state.removePostError = action.payload;
       })
 
       // addComment
@@ -176,7 +176,7 @@ export const postSlice = createSlice({
       })
       .addCase(addComment.rejected, (state, action) => {
         state.addCommentLoading = false;
-        state.addCommentError = action.error.message;
+        state.addCommentError = action.payload;
       })
 
       // likePost
