@@ -180,6 +180,7 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 게시글 좋아요 취소
 router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.user as User;

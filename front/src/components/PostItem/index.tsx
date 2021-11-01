@@ -31,7 +31,7 @@ const PostItem = ({ post }) => {
   }, []);
 
   const onRemovePost = useCallback(() => {
-    return dispatch(removePost(post.id));
+    return dispatch(removePost({ postId: post.id }));
   }, [dispatch, post.id]);
 
   return (
