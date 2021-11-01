@@ -177,7 +177,7 @@ export const postSlice = createSlice({
         const targetPost = state.posts.find((v) => v.id === action.payload.postId);
         state.unlikePostLoading = false;
         state.unlikePostDone = true;
-        targetPost.Likers.filter((v) => v.id !== action.payload.userId);
+        targetPost.Likers = targetPost.Likers.filter((v) => v.id !== action.payload.userId);
       })
       .addCase(unlikePost.rejected, (state, action) => {
         state.unlikePostLoading = false;

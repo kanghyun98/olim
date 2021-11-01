@@ -14,6 +14,8 @@ const PostItem = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.user);
   const [commentOpenedAll, setCommentOpenedAll] = useState(false);
+
+  const id = useSelector((state) => state.user.myInfo?.id);
   const liked = post.Likers.find((v) => v.id === id);
 
   const onLikePost = useCallback(() => {

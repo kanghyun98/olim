@@ -70,7 +70,7 @@ export const likePost = createAsyncThunk('post/likePost', async (data, thunkAPI)
 
 export const unlikePost = createAsyncThunk('post/unlikePost', async (data, thunkAPI) => {
   try {
-    const response = await axios.delete(`/post/${data.postId}/like`, data);
+    const response = await axios.delete(`/post/${data.postId}/like`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
