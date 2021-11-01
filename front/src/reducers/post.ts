@@ -78,6 +78,7 @@ export const postSlice = createSlice({
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
         state.posts = state.posts.concat(action.payload);
+        state.morePosts = state.posts.length === 10;
       })
       .addCase(loadUserPosts.rejected, (state, action) => {
         state.loadUserPostsLoading = false;
