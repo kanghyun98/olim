@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 
+import db from '../database/models';
 import User from '../database/models/user';
 import Post from '../database/models/post';
 import { isLoggedIn, isNotLoggedIn } from './middlewares';
@@ -9,7 +10,7 @@ import { isLoggedIn, isNotLoggedIn } from './middlewares';
 const router = express.Router();
 
 // 내 정보 요청 (쿠키 서버로 전달, 새로고침 시마다)
-router.get('/myinfo', async (req, res, next) => {
+router.get('/myInfo', async (req, res, next) => {
   try {
     if (req.user) {
       const { id } = req.user as User;
@@ -18,18 +19,44 @@ router.get('/myinfo', async (req, res, next) => {
         attributes: { exclude: ['password'] },
         include: [
           {
-            model: Post,
-            attributes: ['id'],
-          },
-          {
             model: User,
             as: 'Followings',
-            attributes: ['id'],
+            attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followingCount']],
           },
           {
             model: User,
             as: 'Followers',
-            attributes: ['id'],
+            attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followerCount']],
+          },
+        ],
+      });
+      return res.status(200).json(allUserData);
+    } else {
+      return res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+});
+
+// 유저 정보 요청
+router.get(`/userInfo/:userId`, async (req, res, next) => {
+  try {
+    if (req.params.userId) {
+      const allUserData = await User.findOne({
+        where: { id: req.params.userId },
+        attributes: { exclude: ['password'] },
+        include: [
+          {
+            model: User,
+            as: 'Followings',
+            attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followingCount']],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followerCount']],
           },
         ],
       });
@@ -104,18 +131,14 @@ router.post('/login', isNotLoggedIn, async (req, res, next) => {
         attributes: { exclude: ['password'] },
         include: [
           {
-            model: Post,
-            attributes: ['id'],
-          },
-          {
             model: User,
             as: 'Followings',
-            attributes: ['id'],
+            attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followingCount']],
           },
           {
             model: User,
             as: 'Followers',
-            attributes: ['id'],
+            attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followerCount']],
           },
         ],
       });
