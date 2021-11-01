@@ -140,10 +140,10 @@ export const postSlice = createSlice({
         state.addCommentError = null;
       })
       .addCase(addComment.fulfilled, (state, action) => {
-        const targetPost = state.posts.find((v) => v.id === action.payload.postId);
+        const targetPost = state.posts.find((v) => v.id === action.payload.PostId);
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        targetPost.Comments.unshift(action.payload.content);
+        targetPost.Comments.unshift(action.payload);
       })
       .addCase(addComment.rejected, (state, action) => {
         state.addCommentLoading = false;

@@ -21,8 +21,8 @@ const CommentForm = ({ comments, postId }) => {
   }, [addCommentDone, setCommentInput]);
 
   const onSubmitComment = useCallback(() => {
-    dispatch(addComment({ content: commentInput, myId, postId }));
-  }, [commentInput, dispatch, myId, postId]);
+    dispatch(addComment({ content: commentInput, postId }));
+  }, [commentInput, dispatch, postId]);
 
   return (
     <CommentWrapper>
