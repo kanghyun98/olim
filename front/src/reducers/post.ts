@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import shortId from 'shortid';
-import faker from 'faker';
 
 import {
   loadAllPosts,
@@ -12,33 +10,6 @@ import {
   likePost,
   unlikePost,
 } from '../actions/post';
-
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      content: faker.lorem.paragraph(),
-      Images: [
-        { src: faker.image.image() },
-        { src: faker.image.image() },
-        { src: faker.image.image() },
-        { src: faker.image.image() },
-      ],
-      User: {
-        id: shortId.generate(),
-        userName: faker.name.findName(),
-      },
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            userName: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
 
 export const initialState = {
   posts: [],

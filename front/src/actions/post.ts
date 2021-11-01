@@ -2,8 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { backUrl } from '../config/config';
 
-import { generateDummyPost } from '../reducers/post';
-
 axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
@@ -19,7 +17,7 @@ export const loadAllPosts = createAsyncThunk('post/loadAllPosts', async (data, t
 export const loadUserPosts = createAsyncThunk('post/loadUserPosts', async (data, thunkAPI) => {
   try {
     // const response = await axios.get(`/user/${data.userId}/posts`);
-    return generateDummyPost(10); // 나중에 사용자의 id받아서 해당 포스트만 받아오기
+    // 나중에 사용자의 id받아서 해당 포스트만 받아오기
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
   }
