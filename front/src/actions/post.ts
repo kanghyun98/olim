@@ -16,7 +16,7 @@ export const loadAllPosts = createAsyncThunk('post/loadAllPosts', async (data, t
 
 export const loadUserPosts = createAsyncThunk('post/loadUserPosts', async (data, thunkAPI) => {
   try {
-    const response = await axios.get(`/posts/user/${data.userId}?lastId=${data.lastId || 0}`);
+    const response = await axios.get(`/posts/user/${data.userName}?lastId=${data.lastId || 0}`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);

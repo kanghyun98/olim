@@ -59,14 +59,14 @@ router.get('/all', async (req, res, next) => {
 });
 
 // Profile에서 유저별 게시글 조회 (loadUserPosts, infinite scrolling)
-router.get('/user/:userId', async (req, res, next) => {
+router.get('/user/:userName', async (req, res, next) => {
   try {
     const { lastId } = req.query as any;
 
     let where = {};
     if (parseInt(lastId, 10)) {
       where = {
-        UserId: req.params.userId,
+        userName: req.params.userName,
         id: {
           [Op.lt]: parseInt(lastId, 10),
         },
