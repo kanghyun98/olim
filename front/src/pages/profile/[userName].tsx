@@ -2,47 +2,61 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
 
 import ProfileHead from '../../components/ProfileHead';
 import PostItem from '../../components/PostItem';
 
-// 백엔드 구축 후 유저별 데이터 불러와서 진행(내 프로필과 합쳐놓음)
 import { loadUserPosts } from '../../actions/post';
+import { loadMyInfo, loadUserInfo } from '../../actions/user';
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const [ref, inView] = useInView();
   const router = useRouter();
-  const { myInfo } = useSelector((state) => state.user); // userInfo 나중에 구축
   const { userName } = router.query;
 
+  const { myInfo, userInfo } = useSelector((state) => state.user);
+  const { posts, morePosts, loadAllPostsLoading } = useSelector((state) => state.post);
+
   useEffect(() => {
-    if (!myInfo) {
-      Router.push('/login');
+    dispatch(loadMyInfo());
+    dispatch(loadUserInfo({ userName }));
+
+    if (inView && morePosts && !loadAllPostsLoading) {
+      const lastId = posts[posts.length - 1]?.id;
+      dispatch(loadUserPosts({ userName, lastId }));
     }
-  }, [myInfo]);
+  }, [inView, loadAllPostsLoading, morePosts, posts, userName]);
 
-  const isMyProfile = true; // userInfo.id === myInfo.id
-  const someoneInfo = isMyProfile ? myInfo : 'userInfo';
+  // useEffect(() => {
+  //   if (!myInfo) {
+  //     Router.push('/login');
+  //   }
+  // }, [myInfo]);
 
-  if (!someoneInfo) {
-    return null;
-  }
   return (
     <>
-      <Head>
-        <title>{`@${someoneInfo.userName} | olim`}</title>
-      </Head>
-      <ProfileHead
-        id={someoneInfo.id}
-        name={someoneInfo.name}
-        userName={someoneInfo.userName}
-        postsNum={someoneInfo.Posts.length}
-        followersNum={someoneInfo.Followers.length}
-        followingsNum={someoneInfo.Followings.length}
-        isMyProfile={isMyProfile}
-      />
-      {someoneInfo.Posts.map((post) => {
-        // return <PostItem key={post.id} post={post} />;
+      {myInfo && userInfo && (
+        <>
+          <Head>
+            <title>{`@${userInfo.userName} | olim`}</title>
+          </Head>
+          <ProfileHead
+            id={userInfo.id}
+            name={userInfo.name}
+            userName={userInfo.userName}
+            postsCount={userInfo.count.postsCount}
+            followersCount={userInfo.count.followersCount}
+            followingsCount={userInfo.count.followingsCount}
+            isMyProfile={myInfo.id === userInfo.id}
+          />
+        </>
+      )}
+      {posts.map((post) => {
+        return <PostItem key={post.id} post={post} />;
       })}
+      <div ref={morePosts && !loadAllPostsLoading ? ref : undefined} />
     </>
   );
 };

@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import FollowButton from './FollowButton';
 import { ProfileHeadWrapper, MyUserInfo, MyPostInfo } from './styled';
 
-const ProfileHead = ({ id, name, userName, postsNum, followersNum, followingsNum, isMyProfile }) => {
+const ProfileHead = ({ id, name, userName, postsCount, followersCount, followingsCount, isMyProfile }) => {
   return (
     <ProfileHeadWrapper>
       <MyUserInfo>
@@ -23,13 +23,13 @@ const ProfileHead = ({ id, name, userName, postsNum, followersNum, followingsNum
       {/* 팔로워, 팔로우 클릭 시 확인  */}
       <MyPostInfo>
         <li>
-          게시물 <span>{postsNum}</span>
+          게시물 <span>{postsCount}</span>
         </li>
         <li>
-          팔로워 <span>{followersNum}</span>
+          팔로워 <span>{followersCount}</span>
         </li>
         <li>
-          팔로우 <span>{followingsNum}</span>
+          팔로우 <span>{followingsCount}</span>
         </li>
       </MyPostInfo>
       <h3>{name}</h3>

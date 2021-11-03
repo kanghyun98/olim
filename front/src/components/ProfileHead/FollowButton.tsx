@@ -11,11 +11,15 @@ const FollowButton = ({ id }) => {
 
   const onClickButton = useCallback(() => {
     if (isFollowing) {
-      dispatch(unfollow(id));
+      dispatch(unfollow({ id }));
     } else {
-      dispatch(follow(id));
+      dispatch(follow({ id }));
     }
   }, [dispatch, id, isFollowing]);
+
+  if (myInfo.id === id) {
+    return null;
+  }
 
   return (
     <Button onClick={onClickButton} loading={followLoading || unfollowLoading}>

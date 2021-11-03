@@ -64,7 +64,8 @@ export const userSlice = createSlice({
       .addCase(loadMyInfo.fulfilled, (state, action) => {
         state.loadMyInfoLoading = false;
         state.loadMyInfoDone = true;
-        state.myInfo = action.payload;
+        state.myInfo = action.payload.userData;
+        state.myInfo.count = action.payload.count;
       })
       .addCase(loadMyInfo.rejected, (state, action) => {
         state.loadMyInfoLoading = false;
@@ -80,11 +81,28 @@ export const userSlice = createSlice({
       .addCase(loadUserInfo.fulfilled, (state, action) => {
         state.loadUserInfoLoading = false;
         state.loadUserInfoDone = true;
-        state.userInfo = action.payload;
+        state.userInfo = action.payload.userData;
+        state.userInfo.count = action.payload.count;
       })
       .addCase(loadUserInfo.rejected, (state, action) => {
         state.loadUserInfoLoading = false;
         state.loadUserInfoError = action.payload;
+      })
+
+      // signup
+      .addCase(signup.pending, (state) => {
+        state.signupLoading = true;
+        state.signupDone = false;
+        state.signupError = null;
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.signupLoading = false;
+        state.signupDone = true;
+        state.signupError = null;
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.signupLoading = false;
+        state.signupError = action.payload;
       })
 
       // login
@@ -96,7 +114,8 @@ export const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loginLoading = false;
         state.loginDone = true;
-        state.myInfo = action.payload;
+        state.myInfo = action.payload.userData;
+        state.myInfo.count = action.payload.count;
       })
       .addCase(login.rejected, (state, action) => {
         state.loginLoading = false;
@@ -117,22 +136,6 @@ export const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false;
         state.logoutError = action.payload;
-      })
-
-      // signup
-      .addCase(signup.pending, (state) => {
-        state.signupLoading = true;
-        state.signupDone = false;
-        state.signupError = null;
-      })
-      .addCase(signup.fulfilled, (state) => {
-        state.signupLoading = false;
-        state.signupDone = true;
-        state.signupError = null;
-      })
-      .addCase(signup.rejected, (state, action) => {
-        state.signupLoading = false;
-        state.signupError = action.payload;
       })
 
       // editProfile
@@ -160,7 +163,8 @@ export const userSlice = createSlice({
       .addCase(follow.fulfilled, (state, action) => {
         state.followLoading = false;
         state.followDone = true;
-        state.myInfo.Followings.push({ id: action.payload });
+        state.myInfo.Followings.push({ id: action.payload.userId });
+        state.userInfo.count = action.payload.count;
       })
       .addCase(follow.rejected, (state, action) => {
         state.followLoading = false;
@@ -176,7 +180,8 @@ export const userSlice = createSlice({
       .addCase(unfollow.fulfilled, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowDone = true;
-        state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload);
+        state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload.userId);
+        state.userInfo.count = action.payload.count;
       })
       .addCase(unfollow.rejected, (state, action) => {
         state.unfollowLoading = false;

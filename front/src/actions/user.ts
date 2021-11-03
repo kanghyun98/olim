@@ -53,7 +53,7 @@ export const editProfile = createAsyncThunk('user/editProfile', async (data, thu
 
 export const follow = createAsyncThunk('user/follow', async (data, thunkAPI) => {
   try {
-    const response = await axios.patch(`/user/${data}/follow`);
+    const response = await axios.patch(`/user/${data.id}/follow`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -62,7 +62,7 @@ export const follow = createAsyncThunk('user/follow', async (data, thunkAPI) => 
 
 export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI) => {
   try {
-    const response = await axios.delete(`/user/${data}/follow`);
+    const response = await axios.delete(`/user/${data.id}/follow`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
