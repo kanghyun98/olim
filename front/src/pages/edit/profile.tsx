@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 import EditProfileForm from '../../components/EditProfileForm';
+import wrapper from '../../store/configureStore';
+import { loadMyInfo } from '../../actions/user';
 
 const EditProfile = () => {
   const { myInfo } = useSelector((state) => state.user);
@@ -23,5 +26,19 @@ const EditProfile = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  const cookie = req ? req.headers.cookie : '';
+  axios.defaults.headers.Cookie = ''; // 쿠키 지우기
+  if (req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+
+  await store.dispatch(loadMyInfo());
+
+  return {
+    props: {},
+  };
+});
 
 export default EditProfile;

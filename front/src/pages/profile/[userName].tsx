@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
-import ProfileHead from '../../components/ProfileHead';
-import PostItem from '../../components/PostItem';
-
+import wrapper from '../../store/configureStore';
 import { loadUserPosts } from '../../actions/post';
 import { loadMyInfo, loadUserInfo } from '../../actions/user';
+
+import ProfileHead from '../../components/ProfileHead';
+import PostItem from '../../components/PostItem';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -17,23 +19,20 @@ const Profile = () => {
   const { userName } = router.query;
 
   const { myInfo, userInfo } = useSelector((state) => state.user);
-  const { posts, morePosts, loadAllPostsLoading } = useSelector((state) => state.post);
+  const { posts, morePosts, loadUserPostsLoading } = useSelector((state) => state.post);
 
   useEffect(() => {
-    dispatch(loadMyInfo());
-    dispatch(loadUserInfo({ userName }));
-
-    if (inView && morePosts && !loadAllPostsLoading) {
+    if (inView && morePosts && !loadUserPostsLoading) {
       const lastId = posts[posts.length - 1]?.id;
       dispatch(loadUserPosts({ userName, lastId }));
     }
-  }, [inView, loadAllPostsLoading, morePosts, posts, userName]);
+  }, [inView, loadUserPostsLoading, morePosts, posts, userName]);
 
-  // useEffect(() => {
-  //   if (!myInfo) {
-  //     Router.push('/login');
-  //   }
-  // }, [myInfo]);
+  useEffect(() => {
+    if (!myInfo) {
+      Router.push('/login');
+    }
+  }, [myInfo]);
 
   return (
     <>
@@ -56,9 +55,25 @@ const Profile = () => {
       {posts.map((post) => {
         return <PostItem key={post.id} post={post} />;
       })}
-      <div ref={morePosts && !loadAllPostsLoading ? ref : undefined} />
+      <div ref={morePosts && !loadUserPostsLoading ? ref : undefined} />
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
+  const cookie = req ? req.headers.cookie : '';
+  axios.defaults.headers.Cookie = ''; // 쿠키 지우기
+  if (req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+
+  await store.dispatch(loadMyInfo());
+  await store.dispatch(loadUserInfo({ userName: params.userName }));
+  await store.dispatch(loadUserPosts({ userName: params.userName }));
+
+  return {
+    props: {},
+  };
+});
 
 export default Profile;
