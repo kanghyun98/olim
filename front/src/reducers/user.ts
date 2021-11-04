@@ -64,8 +64,7 @@ export const userSlice = createSlice({
       .addCase(loadMyInfo.fulfilled, (state, action) => {
         state.loadMyInfoLoading = false;
         state.loadMyInfoDone = true;
-        state.myInfo = action.payload.userData;
-        state.myInfo.count = action.payload.count;
+        state.myInfo = action.payload ? action.payload.userData : null;
       })
       .addCase(loadMyInfo.rejected, (state, action) => {
         state.loadMyInfoLoading = false;
@@ -114,8 +113,7 @@ export const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loginLoading = false;
         state.loginDone = true;
-        state.myInfo = action.payload.userData;
-        state.myInfo.count = action.payload.count;
+        state.myInfo = action.payload ? action.payload.userData : null;
       })
       .addCase(login.rejected, (state, action) => {
         state.loginLoading = false;
