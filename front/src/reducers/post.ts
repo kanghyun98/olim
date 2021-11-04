@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   loadAllPosts,
   loadUserPosts,
+  loadHashtagPosts,
   addPost,
   uploadImages,
   removePost,
@@ -21,6 +22,9 @@ export const initialState = {
   loadUserPostsLoading: false,
   loadUserPostsDone: false,
   loadUserPostsError: null,
+  loadHashtagPostsLoading: false,
+  loadHashtagPostsDone: false,
+  loadHashtagPostsError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -83,6 +87,23 @@ export const postSlice = createSlice({
       .addCase(loadUserPosts.rejected, (state, action) => {
         state.loadUserPostsLoading = false;
         state.loadUserPostsError = action.payload;
+      })
+
+      // loadHashtagPosts
+      .addCase(loadHashtagPosts.pending, (state) => {
+        state.loadHashtagPostsLoading = true;
+        state.loadHashtagPostsDone = false;
+        state.loadHashtagPostsError = null;
+      })
+      .addCase(loadHashtagPosts.fulfilled, (state, action) => {
+        state.loadHashtagPostsLoading = false;
+        state.loadHashtagPostsDone = true;
+        state.posts = state.posts.concat(action.payload);
+        state.morePosts = state.posts.length === 10;
+      })
+      .addCase(loadHashtagPosts.rejected, (state, action) => {
+        state.loadHashtagPostsLoading = false;
+        state.loadHashtagPostsError = action.payload;
       })
 
       // addPost

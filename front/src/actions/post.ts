@@ -23,6 +23,15 @@ export const loadUserPosts = createAsyncThunk('post/loadUserPosts', async (data,
   }
 });
 
+export const loadHashtagPosts = createAsyncThunk('post/loadHashtagPosts', async (data, thunkAPI) => {
+  try {
+    const response = await axios.get(`/posts/hashtag/${encodeURIComponent(data.hashtag)}?lastId=${data?.lastId || 0}`);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 export const addPost = createAsyncThunk('post/addPost', async (data, thunkAPI) => {
   try {
     const response = await axios.post('/post', data);
