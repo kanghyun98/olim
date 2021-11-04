@@ -8,7 +8,7 @@ import Comment from '../database/models/comment';
 
 const router = express.Router();
 
-// Home에서 게시글 조회 (loadAllPosts, infinite scrolling)
+// Home에서 모든 게시글 조회 (loadAllPosts, infinite scrolling)
 router.get('/all', async (req, res, next) => {
   try {
     const { lastId } = req.query as any;
@@ -63,13 +63,23 @@ router.get('/user/:userName', async (req, res, next) => {
   try {
     const { lastId } = req.query as any;
 
+    // get userId
+    const userData = await User.findOne({
+      where: { userName: req.params.userName },
+      attributes: { exclude: ['password'] },
+    });
+
     let where = {};
     if (parseInt(lastId, 10)) {
       where = {
-        userName: req.params.userName,
+        UserId: userData?.dataValues.id,
         id: {
           [Op.lt]: parseInt(lastId, 10),
         },
+      };
+    } else {
+      where = {
+        UserId: userData?.dataValues.id,
       };
     }
 
