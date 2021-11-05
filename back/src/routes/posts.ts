@@ -121,7 +121,7 @@ router.get('/user/:userName', async (req, res, next) => {
 });
 
 // Hashtag에서 태그별 게시글 조회 (loadHashtagPosts, infinite scrolling)
-router.get('/hashtag/:tag', async (req, res, next) => {
+router.get('/tags/:hashtag', async (req, res, next) => {
   try {
     const { lastId } = req.query as any;
 
@@ -141,7 +141,7 @@ router.get('/hashtag/:tag', async (req, res, next) => {
       include: [
         {
           model: Hashtag,
-          where: { name: decodeURIComponent(req.params.tag) },
+          where: { name: decodeURIComponent(req.params.hashtag) },
         },
         {
           model: User,

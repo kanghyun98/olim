@@ -66,7 +66,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
       const result = await Promise.all(
         hashtags.map((tag) =>
           Hashtag.findOrCreate({
-            where: { tagName: tag.slice(1).toLowerCase() },
+            where: { name: tag.slice(1).toLowerCase() },
           })
         )
       );

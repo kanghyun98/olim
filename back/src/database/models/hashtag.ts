@@ -2,7 +2,7 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 
 class Hashtag extends Model {
   public readonly id!: number;
-  public tagName!: string;
+  public name!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -10,7 +10,7 @@ class Hashtag extends Model {
   static initModel(sequelize: Sequelize) {
     return Hashtag.init(
       {
-        tagName: {
+        name: {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
