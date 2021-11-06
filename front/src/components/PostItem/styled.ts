@@ -25,9 +25,17 @@ export const CardWrapper = styled.div`
 
 export const HeaderLink = styled.a`
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
-  & > span {
-    margin-right: 0.5rem;
+  & > div {
+    & > span {
+      margin-right: 0.5rem;
+    }
+  }
+
+  & > .date {
+    font-size: 0.5rem;
+    color: darkgray;
   }
 `;
