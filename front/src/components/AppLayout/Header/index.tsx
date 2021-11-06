@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from 'antd';
 import { UserOutlined, MenuOutlined } from '@ant-design/icons';
@@ -12,7 +13,7 @@ const Header = () => {
   const { myInfo } = useSelector((state) => state.user);
 
   const onSearch = useCallback((value) => {
-    console.log(value);
+    Router.push(`/tags/${value}`);
   }, []);
 
   const onLogout = useCallback(() => {
