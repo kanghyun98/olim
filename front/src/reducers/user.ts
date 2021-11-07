@@ -9,6 +9,7 @@ import {
   editProfile,
   follow,
   unfollow,
+  removeFollower,
   loadFollowings,
   loadFollowers,
 } from '../actions/user';
@@ -41,6 +42,9 @@ export const initialState = {
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
+  removeFollowerLoading: false,
+  removeFollowerDone: false,
+  removeFollowerError: null,
   loadFollowingsLoading: false,
   loadFollowingsDone: false,
   loadFollowingsError: null,
@@ -184,6 +188,22 @@ export const userSlice = createSlice({
       .addCase(unfollow.rejected, (state, action) => {
         state.unfollowLoading = false;
         state.unfollowError = action.payload;
+      })
+
+      // removeFollower
+      .addCase(removeFollower.pending, (state) => {
+        state.removeFollowerLoading = true;
+        state.removeFollowerDone = false;
+        state.removeFollowerError = null;
+      })
+      .addCase(removeFollower.fulfilled, (state, action) => {
+        state.removeFollowerLoading = false;
+        state.removeFollowerDone = true;
+        state.userInfo.count = action.payload.count;
+      })
+      .addCase(removeFollower.rejected, (state, action) => {
+        state.removeFollowerLoading = false;
+        state.removeFollowerError = action.payload;
       })
 
       // loadFollowings

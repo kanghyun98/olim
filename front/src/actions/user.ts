@@ -66,7 +66,16 @@ export const follow = createAsyncThunk('user/follow', async (data, thunkAPI) => 
 
 export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI) => {
   try {
-    const response = await axios.delete(`/user/${data.id}/follow`);
+    const response = await axios.delete(`/user/${data.id}/following`);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const removeFollower = createAsyncThunk('user/removeFollower', async (data, thunkAPI) => {
+  try {
+    const response = await axios.delete(`/user/${data.id}/follower`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -75,7 +84,7 @@ export const unfollow = createAsyncThunk('user/unfollow', async (data, thunkAPI)
 
 export const loadFollowings = createAsyncThunk('user/loadFollowings', async (data, thunkAPI) => {
   try {
-    const response = await axios.get(`/user/${data}/followings`);
+    const response = await axios.get(`/user/${data.userId}/followings?limit=${data.limit}`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
@@ -84,7 +93,7 @@ export const loadFollowings = createAsyncThunk('user/loadFollowings', async (dat
 
 export const loadFollowers = createAsyncThunk('user/loadFollowers', async (data, thunkAPI) => {
   try {
-    const response = await axios.get(`/user/${data}/followers`);
+    const response = await axios.get(`/user/${data.userId}/followers?limit=${data.limit}`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);

@@ -375,7 +375,7 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
 });
 
 // 언팔로우
-router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
+router.delete('/:userId/following', isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.user as User;
 
@@ -448,17 +448,94 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 팔로워 제거
+router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => {
+  try {
+    const { id } = req.user as User;
+
+    const userData = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: { exclude: ['password'] },
+    });
+
+    if (!userData) {
+      return res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+
+    await userData.removeFollowings(id);
+
+    const postsCount = await Post.count({
+      where: { UserId: req.params.userId },
+    });
+
+    const followers = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: User,
+          as: 'Followers',
+          attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followersCount']],
+        },
+      ],
+    });
+
+    let followersCount;
+    if (followers?.Followers.length) {
+      followersCount = await followers
+        .get('Followers')[0]
+        .get('followersCount');
+    } else {
+      followersCount = 0;
+    }
+
+    const followings = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: User,
+          as: 'Followings',
+          attributes: [[db.Sequelize.fn('COUNT', 'id'), 'followingsCount']],
+        },
+      ],
+    });
+
+    let followingsCount;
+    if (followings?.Followings.length) {
+      followingsCount = await followings
+        .get('Followings')[0]
+        .get('followingsCount');
+    } else {
+      followingsCount = 0;
+    }
+
+    const count = { postsCount, followersCount, followingsCount };
+
+    return res.status(200).json({
+      userId: parseInt(req.params.userId, 10),
+      count,
+    });
+  } catch (error) {
+    console.log(error);
+    return next(error);
+  }
+});
+
 // 팔로잉 리스트
-router.get('/:userId/followings', async (req, res, next) => {
+router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
   try {
     const { limit } = req.query as any;
-    const user = await User.findOne({ where: { id: req.params.userId } });
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
     if (!user) {
       return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
     const followings = await user.getFollowings({
       limit: parseInt(limit, 10),
+      attributes: ['id', 'name', 'userName'],
     });
     return res.status(200).json(followings);
   } catch (error) {
@@ -468,16 +545,19 @@ router.get('/:userId/followings', async (req, res, next) => {
 });
 
 // 팔로우 리스트
-router.get('/:userId/followers', async (req, res, next) => {
+router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
   try {
     const { limit } = req.query as any;
-    const user = await User.findOne({ where: { id: req.params.userId } });
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
     if (!user) {
       return res.status(403).send('존재하지 않는 사용자입니다.');
     }
 
     const followers = await user.getFollowers({
       limit: parseInt(limit, 10),
+      attributes: ['id', 'name', 'userName'],
     });
     return res.status(200).json(followers);
   } catch (error) {
