@@ -50,11 +50,17 @@ const PostItem = ({ post }) => {
             key="ellipsis"
             content={
               <Button.Group>
-                <Button>신고</Button>
-                <Button>수정</Button>
-                <Button onClick={onRemovePost} loading={removePostLoading} danger>
-                  삭제
-                </Button>
+                {id && post.User.id === id ? (
+                  <>
+                    <Button>신고</Button>
+                    <Button>수정</Button>
+                    <Button onClick={onRemovePost} loading={removePostLoading} danger>
+                      삭제
+                    </Button>
+                  </>
+                ) : (
+                  <Button>신고</Button>
+                )}
               </Button.Group>
             }
           >
