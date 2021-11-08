@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { Avatar, Button, Card, Popover } from 'antd';
-import { HeartFilled, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { HeartFilled, HeartOutlined, MessageOutlined, EllipsisOutlined, UserOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import PostImages from './PostImages';
@@ -71,7 +71,7 @@ const PostItem = ({ post }) => {
           <Link href={`/profile/${post.User.userName}`}>
             <HeaderLink>
               <div>
-                <Avatar>{post.User.userName}</Avatar>
+                <Avatar icon={<UserOutlined />} />
                 <span>{post.User.userName}</span>
               </div>
               <span className="date">{dayjs(post.updatedAt).format('YYYY년 MM월 DD일')}</span>
