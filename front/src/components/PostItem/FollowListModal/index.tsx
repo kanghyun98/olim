@@ -5,15 +5,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { CloseOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, List } from 'antd';
 
+import { RootState } from '../../../reducers';
 import { loadFollowings, loadFollowers, unfollow, removeFollower } from '../../../actions/user';
 
 import { ModalWrapper, ModalContent, ModalOverlay, MoreButton } from './styled';
 
-const FollowListModal = ({ userId, userName, tabName }) => {
+interface Props {
+  userId: number;
+  userName: string;
+  tabName: string;
+}
+
+const FollowListModal = ({ userId, userName, tabName }: Props) => {
   const dispatch = useDispatch();
 
   const { dataList, loadFollowingsLoading, loadFollowersLoading, unfollowLoading, removeFollowerLoading } = useSelector(
-    (state) => state.user,
+    (state: RootState) => state.user,
   );
   const [limit, setLimit] = useState(10);
 
@@ -30,7 +37,7 @@ const FollowListModal = ({ userId, userName, tabName }) => {
     setLimit((prev) => prev + 3);
   }, []);
 
-  const onCancel = (id) => () => {
+  const onCancel = (id: number) => () => {
     if (tabName === 'followings') {
       dispatch(unfollow({ id }));
     }
@@ -60,7 +67,7 @@ const FollowListModal = ({ userId, userName, tabName }) => {
               }
               bordered
               dataSource={dataList}
-              renderItem={(item) => (
+              renderItem={(item: any) => (
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar icon={<UserOutlined />} />}

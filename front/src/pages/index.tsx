@@ -7,14 +7,15 @@ import { useInView } from 'react-intersection-observer';
 import wrapper from '../store/configureStore';
 import { loadAllPosts } from '../actions/post';
 import { loadMyInfo } from '../actions/user';
+import { RootState } from '../reducers';
 
 import AddPostForm from '../components/AddPostForm';
 import PostItem from '../components/PostItem';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { myInfo } = useSelector((state) => state.user);
-  const { posts, morePosts, loadAllPostsLoading } = useSelector((state) => state.post);
+  const { myInfo } = useSelector((state: RootState) => state.user);
+  const { posts, morePosts, loadAllPostsLoading } = useSelector((state: RootState) => state.post);
   const [ref, inView] = useInView();
 
   useEffect(() => {

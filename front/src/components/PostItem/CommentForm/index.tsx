@@ -3,15 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { Form, Input, Button, List, Comment, Avatar } from 'antd';
 
+import { RootState } from '../../../reducers';
 import useInput from '../../../hooks/useInput';
 import ContentLink from '../ContentLink';
 import { CommentWriteFormWrapper, CommentWrapper } from './styled';
 import { addComment } from '../../../actions/post';
+import { CommentType } from '../../../reducers/post';
 
-const CommentForm = ({ comments, postId }) => {
+interface Props {
+  comments: CommentType[];
+  postId: number;
+}
+
+const CommentForm = ({ comments, postId }: Props) => {
   const dispatch = useDispatch();
-  const { addCommentLoading, addCommentDone } = useSelector((state) => state.post);
-  const myId = useSelector((state) => state.user.myInfo?.id);
+  const { addCommentLoading, addCommentDone } = useSelector((state: RootState) => state.post);
+  const myId = useSelector((state: RootState) => state.user.myInfo?.id);
   const [commentInput, onChangeCommentInput, setCommentInput] = useInput('');
 
   useEffect(() => {

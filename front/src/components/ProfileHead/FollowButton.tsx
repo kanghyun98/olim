@@ -2,12 +2,13 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 
+import { RootState } from '../../reducers';
 import { follow, unfollow } from '../../actions/user';
 
-const FollowButton = ({ id }) => {
+const FollowButton = ({ id }: any) => {
   const dispatch = useDispatch();
-  const { myInfo, followLoading, unfollowLoading } = useSelector((state) => state.user);
-  const isFollowing = myInfo?.Followings.find((v) => v.id === id);
+  const { myInfo, followLoading, unfollowLoading } = useSelector((state: RootState) => state.user);
+  const isFollowing = myInfo?.Followings?.find((v) => v.id === id);
 
   const onClickButton = useCallback(() => {
     if (isFollowing) {
@@ -17,7 +18,7 @@ const FollowButton = ({ id }) => {
     }
   }, [dispatch, id, isFollowing]);
 
-  if (myInfo.id === id) {
+  if (myInfo?.id === id) {
     return null;
   }
 

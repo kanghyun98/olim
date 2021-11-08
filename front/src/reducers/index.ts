@@ -1,10 +1,15 @@
-import { combineReducers } from 'redux';
+import { AnyAction, CombinedState, combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { userSlice } from './user';
-import { postSlice } from './post';
+import { UserInitialStateType, userSlice } from './user';
+import { PostInitialStateType, postSlice } from './post';
 
-const rootReducer = (state, action) => {
+export interface RootState {
+  user: UserInitialStateType;
+  post: PostInitialStateType;
+}
+
+const rootReducer = (state: CombinedState<RootState>, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
       return action.payload;

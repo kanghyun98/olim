@@ -5,7 +5,17 @@ import { Button } from 'antd';
 import FollowButton from './FollowButton';
 import { ProfileHeadWrapper, MyUserInfo, MyPostInfo } from './styled';
 
-const ProfileHead = ({ id, name, userName, postsCount, followersCount, followingsCount, isMyProfile }) => {
+interface Props {
+  id: number;
+  name: string;
+  userName: string;
+  postsCount: number;
+  followersCount: number;
+  followingsCount: number;
+  isMyProfile: boolean;
+}
+
+const ProfileHead = ({ id, name, userName, postsCount, followersCount, followingsCount, isMyProfile }: Props) => {
   return (
     <ProfileHeadWrapper>
       <MyUserInfo>

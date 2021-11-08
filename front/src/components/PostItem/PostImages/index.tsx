@@ -2,8 +2,13 @@ import React from 'react';
 
 import { SlideList, ImageWrapper } from './styled';
 import { imageUrl } from '../../../config/config';
+import { ImageType } from '../../../reducers/post';
 
-const PostImages = ({ images }) => {
+interface Props {
+  images: ImageType[];
+}
+
+const PostImages = ({ images }: Props) => {
   const settings = {
     infinite: false,
     slidesToShow: 1,

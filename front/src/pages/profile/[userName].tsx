@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
+import { RootState } from '../../reducers';
 import wrapper from '../../store/configureStore';
 import { loadUserPosts } from '../../actions/post';
 import { loadMyInfo, loadUserInfo } from '../../actions/user';
@@ -19,8 +20,8 @@ const Profile = () => {
   const router = useRouter();
   const { userName, tab } = router.query;
 
-  const { myInfo, userInfo } = useSelector((state) => state.user);
-  const { posts, morePosts, loadUserPostsLoading } = useSelector((state) => state.post);
+  const { myInfo, userInfo } = useSelector((state: RootState) => state.user);
+  const { posts, morePosts, loadUserPostsLoading } = useSelector((state: RootState) => state.post);
 
   useEffect(() => {
     if (inView && morePosts && !loadUserPostsLoading) {

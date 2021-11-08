@@ -4,12 +4,13 @@ import Router from 'next/router';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
+import { RootState } from '../../reducers';
 import EditProfileForm from '../../components/EditProfileForm';
 import wrapper from '../../store/configureStore';
 import { loadMyInfo } from '../../actions/user';
 
 const EditProfile = () => {
-  const { myInfo } = useSelector((state) => state.user);
+  const { myInfo } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (!myInfo) {

@@ -12,7 +12,84 @@ import {
   unlikePost,
 } from '../actions/post';
 
-export const initialState = {
+export interface PostUserType {
+  id: number;
+  userName: string;
+}
+
+export interface ImageType {
+  id: number;
+  src: string;
+  createdAt: string;
+  updatedAt: string;
+  PostId: number;
+}
+
+export interface CommentUserType {
+  id: number;
+  userName: string;
+}
+
+export interface CommentType {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  UserId: number;
+  PostId: number;
+  User: CommentUserType;
+}
+
+export interface LikerType {
+  id: number;
+}
+
+export interface PostType {
+  id: number;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  UserId: number;
+  User: PostUserType;
+  Images: ImageType[];
+  Comments: CommentType[];
+  Likers: LikerType[];
+}
+
+export interface PostInitialStateType {
+  posts: PostType[];
+  imagePaths: string[];
+  morePosts: boolean;
+  loadAllPostsLoading: boolean;
+  loadAllPostsDone: boolean;
+  loadAllPostsError: any;
+  loadUserPostsLoading: boolean;
+  loadUserPostsDone: boolean;
+  loadUserPostsError: any;
+  loadHashtagPostsLoading: boolean;
+  loadHashtagPostsDone: boolean;
+  loadHashtagPostsError: any;
+  addPostLoading: boolean;
+  addPostDone: boolean;
+  addPostError: any;
+  uploadImagesLoading: boolean;
+  uploadImagesDone: boolean;
+  uploadImagesError: any;
+  removePostLoading: boolean;
+  removePostDone: boolean;
+  removePostError: any;
+  addCommentLoading: boolean;
+  addCommentDone: boolean;
+  addCommentError: any;
+  likePostLoading: boolean;
+  likePostDone: boolean;
+  likePostError: any;
+  unlikePostLoading: boolean;
+  unlikePostDone: boolean;
+  unlikePostError: any;
+}
+
+export const initialState: PostInitialStateType = {
   posts: [],
   imagePaths: [],
   morePosts: true,
@@ -61,7 +138,7 @@ export const postSlice = createSlice({
         state.loadAllPostsDone = false;
         state.loadAllPostsError = null;
       })
-      .addCase(loadAllPosts.fulfilled, (state, action) => {
+      .addCase(loadAllPosts.fulfilled, (state, action: any) => {
         state.loadAllPostsLoading = false;
         state.loadAllPostsDone = true;
         state.posts = state.posts.concat(action.payload);
@@ -78,7 +155,7 @@ export const postSlice = createSlice({
         state.loadUserPostsDone = false;
         state.loadUserPostsError = null;
       })
-      .addCase(loadUserPosts.fulfilled, (state, action) => {
+      .addCase(loadUserPosts.fulfilled, (state, action: any) => {
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
         state.posts = state.posts.concat(action.payload);
@@ -95,7 +172,7 @@ export const postSlice = createSlice({
         state.loadHashtagPostsDone = false;
         state.loadHashtagPostsError = null;
       })
-      .addCase(loadHashtagPosts.fulfilled, (state, action) => {
+      .addCase(loadHashtagPosts.fulfilled, (state, action: any) => {
         state.loadHashtagPostsLoading = false;
         state.loadHashtagPostsDone = true;
         state.posts = state.posts.concat(action.payload);
@@ -112,7 +189,7 @@ export const postSlice = createSlice({
         state.addPostDone = false;
         state.addPostError = null;
       })
-      .addCase(addPost.fulfilled, (state, action) => {
+      .addCase(addPost.fulfilled, (state, action: any) => {
         state.addPostLoading = false;
         state.addPostDone = true;
         state.posts.unshift(action.payload);
@@ -129,7 +206,7 @@ export const postSlice = createSlice({
         state.uploadImagesDone = false;
         state.uploadImagesError = null;
       })
-      .addCase(uploadImages.fulfilled, (state, action) => {
+      .addCase(uploadImages.fulfilled, (state, action: any) => {
         state.uploadImagesLoading = false;
         state.uploadImagesDone = true;
         state.imagePaths = state.imagePaths.concat(action.payload);
@@ -145,7 +222,7 @@ export const postSlice = createSlice({
         state.removePostDone = false;
         state.removePostError = null;
       })
-      .addCase(removePost.fulfilled, (state, action) => {
+      .addCase(removePost.fulfilled, (state, action: any) => {
         state.removePostLoading = false;
         state.removePostDone = true;
         state.posts = state.posts.filter((v) => v.id !== action.payload.postId);
@@ -161,11 +238,11 @@ export const postSlice = createSlice({
         state.addCommentDone = false;
         state.addCommentError = null;
       })
-      .addCase(addComment.fulfilled, (state, action) => {
+      .addCase(addComment.fulfilled, (state, action: any) => {
         const targetPost = state.posts.find((v) => v.id === action.payload.PostId);
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        targetPost.Comments.unshift(action.payload);
+        targetPost?.Comments.unshift(action.payload);
       })
       .addCase(addComment.rejected, (state, action) => {
         state.addCommentLoading = false;
@@ -178,15 +255,15 @@ export const postSlice = createSlice({
         state.likePostDone = false;
         state.likePostError = null;
       })
-      .addCase(likePost.fulfilled, (state, action) => {
+      .addCase(likePost.fulfilled, (state, action: any) => {
         const targetPost = state.posts.find((v) => v.id === action.payload.postId);
         state.likePostLoading = false;
         state.likePostDone = true;
-        targetPost.Likers.push({ id: action.payload.userId });
+        targetPost?.Likers.push({ id: action.payload.userId });
       })
       .addCase(likePost.rejected, (state, action) => {
         state.likePostLoading = false;
-        state.likePostError = action.error.message;
+        state.likePostError = action.payload;
       })
 
       // unlikePost
@@ -195,15 +272,17 @@ export const postSlice = createSlice({
         state.unlikePostDone = false;
         state.unlikePostError = null;
       })
-      .addCase(unlikePost.fulfilled, (state, action) => {
+      .addCase(unlikePost.fulfilled, (state, action: any) => {
         const targetPost = state.posts.find((v) => v.id === action.payload.postId);
         state.unlikePostLoading = false;
         state.unlikePostDone = true;
-        targetPost.Likers = targetPost.Likers.filter((v) => v.id !== action.payload.userId);
+        if (targetPost) {
+          targetPost.Likers = targetPost.Likers.filter((v) => v.id !== action.payload.userId);
+        }
       })
       .addCase(unlikePost.rejected, (state, action) => {
         state.unlikePostLoading = false;
-        state.unlikePostError = action.error.message;
+        state.unlikePostError = action.payload;
       }),
 });
 

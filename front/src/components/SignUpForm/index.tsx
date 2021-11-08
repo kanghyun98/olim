@@ -1,17 +1,17 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
-import Router from 'next/router';
 import { Button, Input } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
+import { RootState } from '../../reducers';
 import useInput from '../../hooks/useInput';
 import { Wrapper, FormWrapper, ErrorMessage } from './styled';
 import { signup } from '../../actions/user';
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const { signupLoading, signupError } = useSelector((state) => state.user);
+  const { signupLoading, signupError } = useSelector((state: RootState) => state.user);
 
   const [name, onChangeName] = useInput('');
   const [loginId, onChangeLoginId] = useInput(''); // 중복 검사

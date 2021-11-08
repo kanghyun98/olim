@@ -2,12 +2,13 @@ import React from 'react';
 import { Global } from '@emotion/react';
 import { useSelector } from 'react-redux';
 
+import { RootState } from '../../reducers';
 import { defaultStyle, Container } from './styled';
 import Header from './Header';
 import Footer from './Footer';
 
-const AppLayout = ({ children }) => {
-  const { myInfo } = useSelector((state) => state.user);
+const AppLayout = ({ children }: any) => {
+  const { myInfo } = useSelector((state: RootState) => state.user);
 
   return (
     <>

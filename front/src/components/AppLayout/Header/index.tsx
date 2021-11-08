@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from 'antd';
 import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 
+import { RootState } from '../../../reducers';
 import { HeaderWrapper, HeaderList, HomeIcon, SearchBox, MenuBox } from './styled';
 import { logout } from '../../../actions/user';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { myInfo } = useSelector((state) => state.user);
+  const { myInfo } = useSelector((state: RootState) => state.user);
 
   const onSearch = useCallback((value) => {
     Router.push(`/tags/${value}`);
@@ -23,7 +24,7 @@ const Header = () => {
   const menu = (
     <Menu>
       <Menu.Item key="profile" icon={<UserOutlined />}>
-        <Link href={`/profile/${myInfo.userName}`}>
+        <Link href={`/profile/${myInfo?.userName}`}>
           <a>프로필</a>
         </Link>
       </Menu.Item>

@@ -3,13 +3,14 @@ import Router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button, Form } from 'antd';
 
+import { RootState } from '../../reducers';
 import { Wrapper, FormWrapper } from './styled';
 import useInput from '../../hooks/useInput';
 import { editProfile } from '../../actions/user';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
-  const { myInfo, editProfileLoading, editProfileError } = useSelector((state) => state.user);
+  const { myInfo, editProfileLoading, editProfileError } = useSelector((state: RootState) => state.user);
   const [name, onChangeName] = useInput(myInfo?.name);
   const [userName, onChangeUserName] = useInput(myInfo?.userName);
 

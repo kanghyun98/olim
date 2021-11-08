@@ -1,7 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 
-const ContentLink = ({ content }) => {
+interface Props {
+  content: string;
+}
+
+const ContentLink = ({ content }: Props) => {
   return (
     <div>
       {content.split(/(#[^\s#@]+|@[^\s#@]+)/g).map((v, index) => {

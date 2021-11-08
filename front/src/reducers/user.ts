@@ -14,7 +14,73 @@ import {
   loadFollowers,
 } from '../actions/user';
 
-export const initialState = {
+export interface FollowingsType {
+  id: number;
+}
+
+export interface CountType {
+  postsCount: number;
+  followersCount: number;
+  followingsCount: number;
+}
+
+export interface InfoType {
+  id: number;
+  loginId: string;
+  userName: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MyInfoType extends InfoType {
+  Followings: FollowingsType[] | null;
+}
+
+export interface UserInfoType extends InfoType {
+  count: CountType;
+}
+
+export interface UserInitialStateType {
+  myInfo: MyInfoType | null;
+  userInfo: UserInfoType | null;
+  dataList: any;
+  loadMyInfoLoading: boolean;
+  loadMyInfoDone: boolean;
+  loadMyInfoError: any;
+  loadUserInfoLoading: boolean;
+  loadUserInfoDone: boolean;
+  loadUserInfoError: any;
+  loginLoading: boolean;
+  loginDone: boolean;
+  loginError: any;
+  logoutLoading: boolean;
+  logoutDone: boolean;
+  logoutError: any;
+  signupLoading: boolean;
+  signupDone: boolean;
+  signupError: any;
+  editProfileLoading: boolean;
+  editProfileDone: boolean;
+  editProfileError: any;
+  followLoading: boolean;
+  followDone: boolean;
+  followError: any;
+  unfollowLoading: boolean;
+  unfollowDone: boolean;
+  unfollowError: any;
+  removeFollowerLoading: boolean;
+  removeFollowerDone: boolean;
+  removeFollowerError: any;
+  loadFollowingsLoading: boolean;
+  loadFollowingsDone: boolean;
+  loadFollowingsError: any;
+  loadFollowersLoading: boolean;
+  loadFollowersDone: boolean;
+  loadFollowersError: any;
+}
+
+export const initialState: UserInitialStateType = {
   myInfo: null,
   userInfo: null,
   dataList: null,
@@ -65,12 +131,12 @@ export const userSlice = createSlice({
         state.loadMyInfoDone = false;
         state.loadMyInfoError = null;
       })
-      .addCase(loadMyInfo.fulfilled, (state, action) => {
+      .addCase(loadMyInfo.fulfilled, (state, action: any) => {
         state.loadMyInfoLoading = false;
         state.loadMyInfoDone = true;
         state.myInfo = action.payload ? action.payload.userData : null;
       })
-      .addCase(loadMyInfo.rejected, (state, action) => {
+      .addCase(loadMyInfo.rejected, (state, action: any) => {
         state.loadMyInfoLoading = false;
         state.loadMyInfoError = action.payload;
       })
@@ -81,13 +147,15 @@ export const userSlice = createSlice({
         state.loadUserInfoDone = false;
         state.loadUserInfoError = null;
       })
-      .addCase(loadUserInfo.fulfilled, (state, action) => {
+      .addCase(loadUserInfo.fulfilled, (state, action: any) => {
         state.loadUserInfoLoading = false;
         state.loadUserInfoDone = true;
         state.userInfo = action.payload.userData;
-        state.userInfo.count = action.payload.count;
+        if (state.userInfo) {
+          state.userInfo.count = action.payload.count;
+        }
       })
-      .addCase(loadUserInfo.rejected, (state, action) => {
+      .addCase(loadUserInfo.rejected, (state, action: any) => {
         state.loadUserInfoLoading = false;
         state.loadUserInfoError = action.payload;
       })
@@ -103,7 +171,7 @@ export const userSlice = createSlice({
         state.signupDone = true;
         state.signupError = null;
       })
-      .addCase(signup.rejected, (state, action) => {
+      .addCase(signup.rejected, (state, action: any) => {
         state.signupLoading = false;
         state.signupError = action.payload;
       })
@@ -114,12 +182,12 @@ export const userSlice = createSlice({
         state.loginDone = false;
         state.loginError = null;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action: any) => {
         state.loginLoading = false;
         state.loginDone = true;
         state.myInfo = action.payload ? action.payload.userData : null;
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action: any) => {
         state.loginLoading = false;
         state.loginError = action.payload;
       })
@@ -135,7 +203,7 @@ export const userSlice = createSlice({
         state.logoutDone = true;
         state.myInfo = null;
       })
-      .addCase(logout.rejected, (state, action) => {
+      .addCase(logout.rejected, (state, action: any) => {
         state.logoutLoading = false;
         state.logoutError = action.payload;
       })
@@ -146,12 +214,12 @@ export const userSlice = createSlice({
         state.editProfileDone = false;
         state.editProfileError = null;
       })
-      .addCase(editProfile.fulfilled, (state, action) => {
+      .addCase(editProfile.fulfilled, (state: any, action: any) => {
         state.editProfileLoading = false;
         state.editProfileDone = true;
         state.myInfo = { ...state.myInfo, name: action.payload.name, userName: action.payload.userName };
       })
-      .addCase(editProfile.rejected, (state, action) => {
+      .addCase(editProfile.rejected, (state, action: any) => {
         state.editProfileLoading = false;
         state.editProfileError = action.payload;
       })
@@ -162,13 +230,13 @@ export const userSlice = createSlice({
         state.followDone = false;
         state.followError = null;
       })
-      .addCase(follow.fulfilled, (state, action) => {
+      .addCase(follow.fulfilled, (state: any, action: any) => {
         state.followLoading = false;
         state.followDone = true;
         state.myInfo.Followings.push({ id: action.payload.userId });
         state.userInfo.count = action.payload.count;
       })
-      .addCase(follow.rejected, (state, action) => {
+      .addCase(follow.rejected, (state, action: any) => {
         state.followLoading = false;
         state.followError = action.payload;
       })
@@ -179,13 +247,13 @@ export const userSlice = createSlice({
         state.unfollowDone = false;
         state.unfollowError = null;
       })
-      .addCase(unfollow.fulfilled, (state, action) => {
+      .addCase(unfollow.fulfilled, (state: any, action: any) => {
         state.unfollowLoading = false;
         state.unfollowDone = true;
-        state.myInfo.Followings = state.myInfo.Followings.filter((v) => v.id !== action.payload.userId);
+        state.myInfo.Followings = state.myInfo.Followings.filter((v: FollowingsType) => v.id !== action.payload.userId);
         state.userInfo.count = action.payload.count;
       })
-      .addCase(unfollow.rejected, (state, action) => {
+      .addCase(unfollow.rejected, (state, action: any) => {
         state.unfollowLoading = false;
         state.unfollowError = action.payload;
       })
@@ -196,12 +264,12 @@ export const userSlice = createSlice({
         state.removeFollowerDone = false;
         state.removeFollowerError = null;
       })
-      .addCase(removeFollower.fulfilled, (state, action) => {
+      .addCase(removeFollower.fulfilled, (state: any, action: any) => {
         state.removeFollowerLoading = false;
         state.removeFollowerDone = true;
         state.userInfo.count = action.payload.count;
       })
-      .addCase(removeFollower.rejected, (state, action) => {
+      .addCase(removeFollower.rejected, (state, action: any) => {
         state.removeFollowerLoading = false;
         state.removeFollowerError = action.payload;
       })
@@ -213,12 +281,12 @@ export const userSlice = createSlice({
         state.loadFollowingsError = null;
         state.dataList = null;
       })
-      .addCase(loadFollowings.fulfilled, (state, action) => {
+      .addCase(loadFollowings.fulfilled, (state, action: any) => {
         state.loadFollowingsLoading = false;
         state.loadFollowingsDone = true;
         state.dataList = action.payload;
       })
-      .addCase(loadFollowings.rejected, (state, action) => {
+      .addCase(loadFollowings.rejected, (state, action: any) => {
         state.loadFollowingsLoading = false;
         state.loadFollowingsError = action.payload;
       })
@@ -230,12 +298,12 @@ export const userSlice = createSlice({
         state.loadFollowersError = null;
         state.dataList = null;
       })
-      .addCase(loadFollowers.fulfilled, (state, action) => {
+      .addCase(loadFollowers.fulfilled, (state, action: any) => {
         state.loadFollowersLoading = false;
         state.loadFollowersDone = true;
         state.dataList = action.payload;
       })
-      .addCase(loadFollowers.rejected, (state, action) => {
+      .addCase(loadFollowers.rejected, (state, action: any) => {
         state.loadFollowersLoading = false;
         state.loadFollowersError = action.payload;
       }),

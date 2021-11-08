@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
+import { RootState } from '../../reducers';
 import wrapper from '../../store/configureStore';
 import { loadHashtagPosts } from '../../actions/post';
 import { loadMyInfo } from '../../actions/user';
@@ -17,7 +18,7 @@ const Tags = () => {
   const router = useRouter();
   const { hashtag } = router.query;
 
-  const { myInfo } = useSelector((state) => state.user);
+  const { myInfo } = useSelector((state: RootState) => state.user);
   const { posts, morePosts, loadHashtagPostsLoading } = useSelector((state) => state.post);
 
   useEffect(() => {

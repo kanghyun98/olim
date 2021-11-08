@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
+import { RootState } from '../../reducers';
 import { Wrapper, FormWrapper } from './styled';
 import useInput from '../../hooks/useInput';
 import { login } from '../../actions/user';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { loginLoading, myInfo, loginError } = useSelector((state) => state.user);
+  const { loginLoading, myInfo, loginError } = useSelector((state: RootState) => state.user);
   const [loginId, onChangeLoginId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
@@ -28,7 +29,6 @@ const LoginForm = () => {
   }, [myInfo]);
 
   const onSubmit = useCallback(() => {
-    console.log(loginId, password);
     return dispatch(
       login({
         loginId,

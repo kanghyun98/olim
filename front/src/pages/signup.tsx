@@ -3,10 +3,11 @@ import Head from 'next/head';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
 
+import { RootState } from '../reducers';
 import SignUpForm from '../components/SignUpForm';
 
 const SignUp = () => {
-  const { myInfo } = useSelector((state) => state.user);
+  const { myInfo } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (myInfo) {

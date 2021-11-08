@@ -5,18 +5,24 @@ import { Avatar, Button, Card, Popover } from 'antd';
 import { HeartFilled, HeartOutlined, MessageOutlined, EllipsisOutlined, UserOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
+import { RootState } from '../../reducers';
 import PostImages from './PostImages';
 import ContentLink from './ContentLink';
 import CommentForm from './CommentForm';
 import { CardWrapper, HeaderLink } from './styled';
 import { removePost, likePost, unlikePost } from '../../actions/post';
+import { PostType } from '../../reducers/post';
 
-const PostItem = ({ post }) => {
+interface Props {
+  post: PostType;
+}
+
+const PostItem = ({ post }: Props) => {
   const dispatch = useDispatch();
-  const { removePostLoading } = useSelector((state) => state.user);
+  const { removePostLoading } = useSelector((state: RootState) => state.post);
   const [commentOpenedAll, setCommentOpenedAll] = useState(false);
 
-  const id = useSelector((state) => state.user.myInfo?.id);
+  const id = useSelector((state: RootState) => state.user.myInfo?.id);
   const liked = post.Likers.find((v) => v.id === id);
 
   const onLikePost = useCallback(() => {
