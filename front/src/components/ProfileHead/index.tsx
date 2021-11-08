@@ -9,7 +9,11 @@ const ProfileHead = ({ id, name, userName, postsCount, followersCount, following
   return (
     <ProfileHeadWrapper>
       <MyUserInfo>
-        <h2>{userName}</h2>
+        <Link href={`/profile/${userName}`}>
+          <a>
+            <h2>{userName}</h2>
+          </a>
+        </Link>
         {isMyProfile ? (
           <Button>
             <Link href="/edit/profile">
@@ -20,16 +24,23 @@ const ProfileHead = ({ id, name, userName, postsCount, followersCount, following
           <FollowButton id={id} />
         )}
       </MyUserInfo>
-      {/* 팔로워, 팔로우 클릭 시 확인  */}
       <MyPostInfo>
         <li>
           게시물 <span>{postsCount}</span>
         </li>
         <li>
-          팔로워 <span>{followersCount}</span>
+          <Link href={`/profile/${userName}?tab=followers`}>
+            <a>
+              팔로워 <span>{followersCount}</span>
+            </a>
+          </Link>
         </li>
         <li>
-          팔로우 <span>{followingsCount}</span>
+          <Link href={`/profile/${userName}?tab=followings`}>
+            <a>
+              팔로우 <span>{followingsCount}</span>
+            </a>
+          </Link>
         </li>
       </MyPostInfo>
       <h3>{name}</h3>

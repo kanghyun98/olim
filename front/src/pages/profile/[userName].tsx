@@ -11,12 +11,13 @@ import { loadMyInfo, loadUserInfo } from '../../actions/user';
 
 import ProfileHead from '../../components/ProfileHead';
 import PostItem from '../../components/PostItem';
+import FollowListModal from '../../components/PostItem/FollowListModal';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
   const router = useRouter();
-  const { userName } = router.query;
+  const { userName, tab } = router.query;
 
   const { myInfo, userInfo } = useSelector((state) => state.user);
   const { posts, morePosts, loadUserPostsLoading } = useSelector((state) => state.post);
@@ -50,12 +51,13 @@ const Profile = () => {
             followingsCount={userInfo.count.followingsCount}
             isMyProfile={myInfo.id === userInfo.id}
           />
+          {posts.map((post) => {
+            return <PostItem key={post.id} post={post} />;
+          })}
+          {tab && <FollowListModal userId={userInfo.id} userName={userInfo.userName} tabName={tab} />}
+          <div ref={morePosts && !loadUserPostsLoading ? ref : undefined} />
         </>
       )}
-      {posts.map((post) => {
-        return <PostItem key={post.id} post={post} />;
-      })}
-      <div ref={morePosts && !loadUserPostsLoading ? ref : undefined} />
     </>
   );
 };

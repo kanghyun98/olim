@@ -9,7 +9,7 @@ export const HeaderWrapper = styled.header`
   background-color: white;
   border-bottom: 1px solid #dbdbdb;
   background-color: #fafafa;
-  z-index: 10;
+  z-index: 1;
 `;
 
 export const HeaderList = styled.div`

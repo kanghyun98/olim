@@ -14,7 +14,7 @@ export const MyUserInfo = styled.div`
   display: flex;
   align-items: center;
 
-  & > h2 {
+  & > a > h2 {
     font-weight: 300;
     font-size: 2rem;
     margin-right: 1.5rem;
@@ -30,6 +30,10 @@ export const MyPostInfo = styled.ul`
     margin-right: 2.5rem;
 
     & > span {
+      font-weight: 600;
+    }
+
+    & > a > span {
       font-weight: 600;
     }
   }
