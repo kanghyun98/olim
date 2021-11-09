@@ -45,13 +45,16 @@ const Home = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
   const cookie = req ? req.headers.cookie : '';
-  axios.defaults.headers.Cookie = ''; // 쿠키 지우기
-  if (req && cookie) {
-    axios.defaults.headers.Cookie = cookie;
+  if (axios.defaults?.headers) {
+    axios.defaults.headers.Cookie = ''; // 쿠키 지우기
+
+    if (req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
   }
 
   await store.dispatch(loadMyInfo());
-  await store.dispatch(loadAllPosts());
+  await store.dispatch(loadAllPosts({ lastId: 0 }));
 
   return {
     props: {},

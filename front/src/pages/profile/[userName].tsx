@@ -65,14 +65,17 @@ const Profile = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
   const cookie = req ? req.headers.cookie : '';
-  axios.defaults.headers.Cookie = ''; // 쿠키 지우기
-  if (req && cookie) {
-    axios.defaults.headers.Cookie = cookie;
+  if (axios.defaults?.headers) {
+    axios.defaults.headers.Cookie = ''; // 쿠키 지우기
+
+    if (req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
   }
 
   await store.dispatch(loadMyInfo());
-  await store.dispatch(loadUserInfo({ userName: params.userName }));
-  await store.dispatch(loadUserPosts({ userName: params.userName }));
+  await store.dispatch(loadUserInfo({ userName: params?.userName }));
+  await store.dispatch(loadUserPosts({ userName: params?.userName }));
 
   return {
     props: {},
