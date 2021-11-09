@@ -9,7 +9,7 @@ export interface RootState {
   post: PostInitialStateType;
 }
 
-const rootReducer = (state: CombinedState<RootState>, action: AnyAction) => {
+const rootReducer = (state: any, action: any) => {
   switch (action.type) {
     case HYDRATE:
       return action.payload;

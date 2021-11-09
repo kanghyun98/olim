@@ -13,7 +13,7 @@ import { ModalWrapper, ModalContent, ModalOverlay, MoreButton } from './styled';
 interface Props {
   userId: number;
   userName: string;
-  tabName: string;
+  tabName: string | string[];
 }
 
 const FollowListModal = ({ userId, userName, tabName }: Props) => {
