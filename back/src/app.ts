@@ -5,6 +5,8 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import hpp from 'hpp';
+import helmet from 'helmet';
 const path = require('path');
 
 import db from './database/models/index';
@@ -28,14 +30,28 @@ db.sequelize
 
 passportConfig();
 
-app.use(morgan('dev'));
-app.use(
-  cors({
-    origin: true, // 나중에 https://olim.com
-    credentials: true, // 쿠키
-  })
-);
+if (prod) {
+  app.use(hpp()); // 보안
+  app.use(helmet()); // 보안
+  app.use(morgan('combined'));
+  app.use(
+    cors({
+      origin: true, // 변경 필요
+      credentials: true,
+    })
+  );
+} else {
+  app.use(morgan('dev'));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
+}
+
 app.use('/images', express.static(path.join('C:/Project/olim/back/uploads'))); // uploads 디렉토리 접근
+
 app.use(express.json()); // axios로 받은 데이터 처리
 app.use(express.urlencoded({ extended: true })); // 일반 form의 데이터 처리
 
